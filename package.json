@@ -1,0 +1,21 @@
+{
+	"name": "songs-deck",
+	"version": "1.0.0",
+	"description": "custom spotify clone using spotify api",
+	"main": "server.js",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^9.0.2",
+		"express": "^4.17.1",
+		"lyrics-finder": "^21.7.0",
+		"spotify-web-api-node": "^5.0.2"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"client": "cd client && npm start",
+		"server": "nodemon server.js",
+		"start": "node server.js"
+	},
+	"author": "Prateek Singh",
+	"license": "ISC"
+}

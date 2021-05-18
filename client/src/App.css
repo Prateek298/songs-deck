@@ -1,0 +1,26 @@
+/* colors [ #0b0c10, #1f2833, #c5c6c7, #66fcf1, #45a29e] */
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	/* padding: 10px; */
+	overflow-x: hidden;
+	height: 100vh;
+}
+
+a {
+	text-decoration: none;
+}
+
+.app-container {
+	height: 100%;
+	padding: 10px;
+	/* background-color: #0b0c10; */
+	background-image: url(https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fGRhcmt8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
