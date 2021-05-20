@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 export const HeaderContainer = styled.header`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	height: 60px;
 	width: 100%;
 	padding: 10px;
@@ -13,10 +14,26 @@ export const HeaderContainer = styled.header`
 
 export const LogoContainer = styled(Link)`
     height: 100%;
-    width: 50px;
+    width: 40px;
 `;
 
-export const NavLink = styled(Link)`
-	color:white;
-	padding: 5px 0;
+export const ImgContainer = styled.div`
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+`;
+
+export const ProfileImage = styled.img`
+	object-fit: contain;
+	height: 100%;
+	width: 100%;
+`;
+
+export const PremiumLink = styled.a`
+	color: green;
+
+	&:focus {
+		color: green;
+	}
 `;

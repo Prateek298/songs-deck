@@ -1,15 +1,23 @@
 import React from 'react';
 
-import { HeaderContainer, LogoContainer, NavLink } from './header-styles';
+import { HeaderContainer, LogoContainer, ImgContainer, ProfileImage, PremiumLink } from './header-styles';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
+import SideNav from '../sideNav/sideNav-comp';
 
-const Header = () => {
+const Header = ({ id, profileImg }) => {
 	return (
 		<HeaderContainer>
+			<SideNav userId={id} />
 			<LogoContainer to="/">
 				<Logo />
 			</LogoContainer>
-			<NavLink to="/search">SEARCH</NavLink>
+			{profileImg ? (
+				<ImgContainer>
+					<ProfileImage src={profileImg} alt="User Img" />
+				</ImgContainer>
+			) : (
+				<PremiumLink href="https://www.spotify.com/in-en/premium/">PREMIUM</PremiumLink>
+			)}
 		</HeaderContainer>
 	);
 };
