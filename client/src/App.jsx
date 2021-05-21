@@ -56,12 +56,7 @@ const App = () => {
 				<Route
 					exact
 					path="/"
-					render={() =>
-						code === null || code === undefined ? (
-							<LandingPage />
-						) : (
-							<UserDashboard accessToken={accessToken} />
-						)}
+					render={() => (code ? <UserDashboard accessToken={accessToken} /> : <LandingPage />)}
 				/>
 				<Route
 					exact

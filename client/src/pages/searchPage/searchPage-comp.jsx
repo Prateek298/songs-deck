@@ -5,7 +5,7 @@ import { SearchPageContainer, SongsList } from './searchPage-styles';
 import { spotifyApi } from '../../App';
 
 import SearchBox from '../../components/searchBox/searchBox-comp';
-import SearchItem from '../../components/searchItem/searchItem-comp';
+import SongTrack from '../../components/songTrack/songTrack-comp';
 
 const SearchPage = ({ accessToken }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
@@ -23,20 +23,14 @@ const SearchPage = ({ accessToken }) => {
 					const res = await spotifyApi.searchTracks(searchTerm);
 					const reqInfo = res.body.tracks.items;
                     setSearchResults(reqInfo.map(item => {
-                        const smallestAlbumImage = item.album.images.reduce(
-                            (smallest, image) => {
-                              if (image.height < smallest.height) return image
-                              return smallest
-                            },
-                            item.album.images[0]
-                          )
-                
-                          return {
-                            artist: item.artists[0].name,
-                            title: item.name,
-                            uri: item.uri,
-                            albumUrl: smallestAlbumImage.url,
-                          }
+						const { artists, name, album, uri } = item;
+						return {
+							artists: artists.map(artist => artist.name),
+							title: name,
+							albumImageUrl: album.images[2].url,
+							albumName: album.album_type !== 'single' ? album.name : album.album_type,
+							uri
+						}
                     }))
 				} catch (err) {
 					console.error('Error while searching \n', err);
@@ -56,7 +50,7 @@ const SearchPage = ({ accessToken }) => {
 			{searchResults?.length ? (
 				<SongsList>
 					{
-						searchResults.map(track => <SearchItem key={track.uri} track={track} />)
+						searchResults.map(track => <SongTrack key={track.uri} track={track} />)
 					}
 				</SongsList>
 			) : <p>No results found</p>}

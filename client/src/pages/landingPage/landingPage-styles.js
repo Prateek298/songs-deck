@@ -5,7 +5,7 @@ export const LandingPageContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: calc(100% - 60px);
+	height: calc(100% - 60px - 20px);
 	padding: 10px;
 `;
 
