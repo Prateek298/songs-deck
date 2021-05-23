@@ -11,3 +11,14 @@ export const SongsList = styled.div`
 	margin-top: 10px;
 	overflow-y: auto;
 `;
+
+export const ModalPlaylistName = styled.p`
+	padding: 10px 5px;
+	letter-spacing: 1.2px;
+	cursor: pointer;
+
+	&:hover,
+	&:active {
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+`;

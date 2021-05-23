@@ -4,6 +4,7 @@ export const PlaylistItemContainer = styled.div`
 	display: flex;
 	padding: 10px 5px;
 	margin: 5px 0;
+	width: fit-content;
 	cursor: pointer;
 `;
 

@@ -22,6 +22,8 @@ const PlayingPage = ({ accessToken }) => {
 			}
 		}
 		getLyrics();
+
+		return () => setLyrics('');
 	}, [ artist, title, trackUri ]);
 
 	return (

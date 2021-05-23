@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-import { SearchPageContainer, SongsList } from './searchPage-styles';
+import { SearchPageContainer, SongsList, ModalPlaylistName } from './searchPage-styles';
 
 import { spotifyApi } from '../../App';
 
+import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
+import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
+
 import SearchBox from '../../components/searchBox/searchBox-comp';
 import SongTrack from '../../components/songTrack/songTrack-comp';
+import Modal from '../../components/modal/modal-comp';
 
-const SearchPage = ({ accessToken }) => {
+const SearchPage = ({ accessToken, userId }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const [ searchResults, setSearchResults ] = useState();
 
@@ -44,13 +48,27 @@ const SearchPage = ({ accessToken }) => {
 
 	const handleChange = e => setSearchTerm(e.target.value);
 
+	const playlists = useFetchPlaylists(userId);
+
+	const { openModal, setOpenModal, uriToAdd, addToPlaylist, longPress } = useAddToPlaylist();
+
 	return (
 		<SearchPageContainer>
+			<Modal open={openModal} setOpen={setOpenModal}>
+				<h3>Add to Playlist</h3>
+				<hr style={{ margin: '10px 0' }} />
+				{playlists.map(playlist => (
+					<ModalPlaylistName key={playlist.id} onClick={() => addToPlaylist(playlist.id, [ uriToAdd ])}>
+						{playlist.name}
+					</ModalPlaylistName>
+				))}
+			</Modal>
+
 			<SearchBox searchTerm={searchTerm} handleChange={handleChange} />
 			{searchResults?.length ? (
 				<SongsList>
 					{
-						searchResults.map(track => <SongTrack key={track.uri} track={track} />)
+						searchResults.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)
 					}
 				</SongsList>
 			) : <p>No results found</p>}

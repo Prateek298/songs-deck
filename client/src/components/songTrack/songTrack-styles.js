@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const SongTrackContainer = styled.div`
 	display: flex;
+	width: fit-content;
 	padding: 10px 5px;
 	margin-bottom: 5px;
 	cursor: pointer;
@@ -18,6 +19,7 @@ export const Title = styled.h4`
 	color: orangered;
 `;
 
-// export const Artist = styled.span`
-
-// `
+// export const ModalPlaylistName = styled.p`
+// 	padding: 10px 5px;
+// 	letter-spacing: 1.2px;
+// `;

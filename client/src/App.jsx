@@ -61,7 +61,12 @@ const App = () => {
 				<Route
 					exact
 					path="/search"
-					render={() => (accessToken ? <SearchPage accessToken={accessToken} /> : <Redirect to="/" />)}
+					render={() =>
+						accessToken ? (
+							<SearchPage accessToken={accessToken} userId={userInfo.id} />
+						) : (
+							<Redirect to="/" />
+						)}
 				/>
 				<Route
 					path="/:trackId&:artist&:title"

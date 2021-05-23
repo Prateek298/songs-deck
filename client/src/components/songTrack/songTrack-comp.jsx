@@ -3,19 +3,17 @@ import { useHistory } from 'react-router-dom';
 
 import { Title, SongTrackContainer, TrackInfo } from './songTrack-styles';
 
-const SongTrack = ({ track }) => {
-	const { artists, title, albumImageUrl, uri } = track;
+const SongTrack = ({ track, ...longPress }) => {
 	const history = useHistory();
 
-	const handleClick = () => {
-		history.push(`/${uri}&${artists[0]}&${title}`);
-	};
-
+	const { artists, title, albumImageUrl, uri } = track;
 	const artistsString =
 		artists.length === 1 ? artists[0] : artists.reduce((acc, artist) => acc + artist + ' , ', '').slice(0, -3);
 
+	const handleClick = () => history.push(`/${uri}&${artists[0]}&${title}`);
+
 	return (
-		<SongTrackContainer onClick={handleClick}>
+		<SongTrackContainer data-uri={track.uri} onClick={handleClick} {...longPress}>
 			<img src={albumImageUrl} alt="img" />
 			<TrackInfo>
 				<Title>{title}</Title>

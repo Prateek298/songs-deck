@@ -4,6 +4,11 @@ const BaseButtonStyles = css`
 	padding: 20px 25px;
 	border-radius: 3px;
 	color: ${props => props.color || '#66fcf1'};
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
 `;
 
 export const SolidButton = styled.button`

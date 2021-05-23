@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { PlaylistContainer, PageTitle, SongsList } from './playlist-styles';
+import { PlaylistContainer, PageTitle, SongsList, ModalPlaylistName } from './playlist-styles';
 
 import { spotifyApi } from '../../App';
 
-import SongTrack from '../../components/songTrack/songTrack-comp';
+import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
+import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
+
+import SongTrack from '../songTrack/songTrack-comp';
+import Modal from '../modal/modal-comp';
 
 const Playlist = () => {
-	const { playlistId } = useParams();
+	const { playlistId, userId } = useParams();
 	const [ playlistTracks, setPlaylistTracks ] = useState([]);
 	const [ playlistName, setPlaylistName ] = useState('');
 
@@ -35,14 +39,31 @@ const Playlist = () => {
 				}
 			};
 			getPlaylistInfo();
+
+			return () => setPlaylistTracks([]);
 		},
 		[ playlistId ]
 	);
 
+	const playlists = useFetchPlaylists(userId);
+	const { openModal, setOpenModal, uriToAdd, addToPlaylist, longPress } = useAddToPlaylist();
+
 	return (
 		<PlaylistContainer>
+			<Modal open={openModal} setOpen={setOpenModal}>
+				<h3>Add to Playlist</h3>
+				<hr style={{ margin: '10px 0' }} />
+				{playlists.map(playlist => (
+					<ModalPlaylistName key={playlist.id} onClick={() => addToPlaylist(playlist.id, [ uriToAdd ])}>
+						{playlist.name}
+					</ModalPlaylistName>
+				))}
+			</Modal>
+
 			<PageTitle>{playlistName}</PageTitle>
-			<SongsList>{playlistTracks.map(track => <SongTrack key={track.uri} track={track} />)}</SongsList>
+			<SongsList>
+				{playlistTracks.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)}
+			</SongsList>
 		</PlaylistContainer>
 	);
 };
