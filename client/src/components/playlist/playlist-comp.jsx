@@ -50,7 +50,7 @@ const Playlist = () => {
 
 	return (
 		<PlaylistContainer>
-			<Modal open={openModal} setOpen={setOpenModal}>
+			<Modal open={openModal} setOpen={setOpenModal} addClose>
 				<h3>Add to Playlist</h3>
 				<hr style={{ margin: '10px 0' }} />
 				{playlists.map(playlist => (

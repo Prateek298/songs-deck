@@ -21,6 +21,7 @@ export const ModalContainer = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: clamp(280px, 30%, 550px);
+	max-height: 350px;
 	display: ${props => (props.open ? 'block' : 'none')};
 	z-index: 1000;
 `;
