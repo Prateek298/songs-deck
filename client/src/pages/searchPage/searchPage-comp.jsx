@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { SearchPageContainer, SongsList, ModalPlaylistName } from './searchPage-styles';
+import { SearchPageContainer, SearchResContainer, ModalPlaylistName } from './searchPage-styles';
 
 import { spotifyApi } from '../../App';
 
@@ -9,11 +9,14 @@ import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
 
 import SearchBox from '../../components/searchBox/searchBox-comp';
 import SongTrack from '../../components/songTrack/songTrack-comp';
+import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
 import Modal from '../../components/modal/modal-comp';
+import SegmentedSelect from '../../components/segmentedSelect/segmentedSelect-comp';
 
 const SearchPage = ({ accessToken, userId }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const [ searchResults, setSearchResults ] = useState();
+	const [ filter, setFilter ] = useState('track');
 
 	useEffect(
 		() => {
@@ -21,7 +24,7 @@ const SearchPage = ({ accessToken, userId }) => {
 			if (!searchTerm) return setSearchResults([]);
 
             let cancelRequest = false;
-            const getSearchResults = async () => {
+            const getSearchResultsByTracks = async () => {
                 try {
                     if(cancelRequest) return;
 					const res = await spotifyApi.searchTracks(searchTerm);
@@ -40,13 +43,35 @@ const SearchPage = ({ accessToken, userId }) => {
 					console.error('Error while searching \n', err);
 				}
 			};
-			getSearchResults();
+			const getSearchResultsByPlaylists = async () => {
+				try {
+					const res = await spotifyApi.searchPlaylists(searchTerm);
+					const reqInfo = res.body.playlists.items;
+					setSearchResults(
+						reqInfo.map(playlist => {
+							const { id, name, owner, images, uri, tracks } = playlist;
+							return {
+								id,
+								name,
+								owner,
+								playlistUri: uri,
+								playlistImgMedium: images[1],
+								playlistImgSmall: images[2],
+								totalTracks: tracks.total
+							};
+						})
+					)
+				} catch (err) {
+					console.error('Error while searching for playlists', err);
+				}
+			}
+			if (filter === 'track') getSearchResultsByTracks();
+			else if(filter === 'playlist') getSearchResultsByPlaylists();
+
             return () => (cancelRequest = true)
 		},
-		[ searchTerm, accessToken ]
+		[ searchTerm, accessToken, filter ]
 	);
-
-	const handleChange = e => setSearchTerm(e.target.value);
 
 	const playlists = useFetchPlaylists(userId);
 
@@ -64,14 +89,19 @@ const SearchPage = ({ accessToken, userId }) => {
 				))}
 			</Modal>
 
-			<SearchBox searchTerm={searchTerm} handleChange={handleChange} />
+			<SearchBox searchTerm={searchTerm} handleChange={e => setSearchTerm(e.target.value)} />
 			{searchResults?.length ? (
-				<SongsList>
+				<SearchResContainer>
 					{
-						searchResults.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)
+						filter === 'track' && searchResults.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)
 					}
-				</SongsList>
-			) : <p>No results found</p>}
+					{
+						filter === 'playlist' && searchResults.map(playlist => <PlaylistItem key={playlist.id} path="search" {...playlist} />)
+					}	
+				</SearchResContainer>
+			) : (
+				<SegmentedSelect category="Search By:" inputName="filter" valueList={[ 'track', 'playlist' ]} categoryState={filter} setCategoryState={setFilter} />
+			)}
 		</SearchPageContainer>
 	);
 };

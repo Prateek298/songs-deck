@@ -6,7 +6,7 @@ export const SearchPageContainer = styled.div`
 	flex-direction: column;
 `;
 
-export const SongsList = styled.div`
+export const SearchResContainer = styled.div`
 	flex-grow: 1;
 	margin-top: 10px;
 	overflow-y: auto;

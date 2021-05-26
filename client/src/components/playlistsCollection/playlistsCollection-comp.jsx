@@ -113,7 +113,7 @@ const PlaylistsCollection = () => {
 				<Plus>+</Plus>
 				<span style={{ fontWeight: 'bold', letterSpacing: '1.1px' }}>New Playlist</span>
 			</AddNew>
-			{playlists.map(playlist => <PlaylistItem key={playlist.id} {...playlist} />)}
+			{playlists.map(playlist => <PlaylistItem key={playlist.id} {...playlist} path="own" />)}
 		</PlaylistsCollectionContainer>
 	);
 };
