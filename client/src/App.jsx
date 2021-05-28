@@ -5,6 +5,7 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import './App.css';
 
 import useAuth from './customHooks/useAuth';
+import { getAuthenticatedUser } from './spotify-utils/users';
 
 import Header from './components/header/header-comp';
 
@@ -34,17 +35,7 @@ const App = () => {
 			if (!accessToken) return;
 
 			spotifyApi.setAccessToken(accessToken);
-
-			const getUserData = async () => {
-				const res = await spotifyApi.getMe();
-				const { id, display_name, images } = res.body;
-				setUserInfo({
-					id,
-					displayName: display_name,
-					profileImg: images[0].url
-				});
-			};
-			getUserData();
+			getAuthenticatedUser().then(userData => setUserInfo(userData));
 		},
 		[ accessToken ]
 	);

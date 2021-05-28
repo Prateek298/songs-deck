@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { PlaylistContainer, PageTitle, SongsList, ModalPlaylistName } from './playlist-styles';
 
-import { spotifyApi } from '../../App';
-
+import { getPlaylistTracks } from '../../spotify-utils/playlists';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
 
@@ -18,27 +17,10 @@ const Playlist = () => {
 
 	useEffect(
 		() => {
-			const getPlaylistInfo = async () => {
-				try {
-					const { body } = await spotifyApi.getPlaylist(playlistId);
-					setPlaylistName(body.name);
-					setPlaylistTracks(
-						body.tracks.items.map(item => {
-							const { album, artists, name, uri } = item.track;
-							return {
-								title: name,
-								artists: artists.map(artist => artist.name),
-								albumName: album.album_type !== 'single' ? album.name : album.album_type,
-								albumImageUrl: album.images[2].url,
-								uri
-							};
-						})
-					);
-				} catch (err) {
-					console.log('Could not retrieve playlist info ', err);
-				}
-			};
-			getPlaylistInfo();
+			getPlaylistTracks(playlistId).then(({ name, tracks }) => {
+				setPlaylistName(name);
+				setPlaylistTracks(tracks);
+			});
 
 			return () => setPlaylistTracks([]);
 		},

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { SearchPageContainer, SearchResContainer, ModalPlaylistName } from './searchPage-styles';
 
-import { spotifyApi } from '../../App';
-
+import useSearch from '../../customHooks/useSearch';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
 
@@ -15,66 +14,10 @@ import SegmentedSelect from '../../components/segmentedSelect/segmentedSelect-co
 
 const SearchPage = ({ accessToken, userId }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
-	const [ searchResults, setSearchResults ] = useState();
 	const [ filter, setFilter ] = useState('track');
 
-	useEffect(
-		() => {
-			if (!accessToken) return;
-			if (!searchTerm) return setSearchResults([]);
-
-            let cancelRequest = false;
-            const getSearchResultsByTracks = async () => {
-                try {
-                    if(cancelRequest) return;
-					const res = await spotifyApi.searchTracks(searchTerm);
-					const reqInfo = res.body.tracks.items;
-                    setSearchResults(reqInfo.map(item => {
-						const { artists, name, album, uri } = item;
-						return {
-							artists: artists.map(artist => artist.name),
-							title: name,
-							albumImageUrl: album.images[2].url,
-							albumName: album.album_type !== 'single' ? album.name : album.album_type,
-							uri
-						}
-                    }))
-				} catch (err) {
-					console.error('Error while searching \n', err);
-				}
-			};
-			const getSearchResultsByPlaylists = async () => {
-				try {
-					const res = await spotifyApi.searchPlaylists(searchTerm);
-					const reqInfo = res.body.playlists.items;
-					setSearchResults(
-						reqInfo.map(playlist => {
-							const { id, name, owner, images, uri, tracks } = playlist;
-							return {
-								id,
-								name,
-								owner,
-								playlistUri: uri,
-								playlistImgMedium: images[1],
-								playlistImgSmall: images[2],
-								totalTracks: tracks.total
-							};
-						})
-					)
-				} catch (err) {
-					console.error('Error while searching for playlists', err);
-				}
-			}
-			if (filter === 'track') getSearchResultsByTracks();
-			else if(filter === 'playlist') getSearchResultsByPlaylists();
-
-            return () => (cancelRequest = true)
-		},
-		[ searchTerm, accessToken, filter ]
-	);
-
+	const searchResults = useSearch(accessToken, searchTerm, filter);
 	const playlists = useFetchPlaylists(userId);
-
 	const { openModal, setOpenModal, uriToAdd, addToPlaylist, longPress } = useAddToPlaylist();
 
 	return (

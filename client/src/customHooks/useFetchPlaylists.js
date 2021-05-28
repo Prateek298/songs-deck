@@ -1,35 +1,13 @@
 import { useState, useEffect } from 'react';
 
-import { spotifyApi } from '../App';
+import { getUserPlaylists } from '../spotify-utils/playlists';
 
 const useFetchPlaylists = userId => {
 	const [ playlists, setPlaylists ] = useState([]);
 
 	useEffect(
 		() => {
-			const getUserPlaylists = async () => {
-				try {
-					const { body: { items } } = await spotifyApi.getUserPlaylists(userId);
-					// console.log(items);
-					setPlaylists(
-						items.map(playlist => {
-							const { id, name, images, uri, tracks } = playlist;
-							return {
-								id,
-								name,
-								playlistUri: uri,
-								playlistImgMedium: images[1],
-								playlistImgSmall: images[2],
-								totalTracks: tracks.total
-							};
-						})
-					);
-				} catch (err) {
-					console.log('Error fetching playlists ', err);
-				}
-			};
-			getUserPlaylists();
-
+			getUserPlaylists(userId).then(res => setPlaylists(res));
 			return () => setPlaylists([]);
 		},
 		[ userId ]

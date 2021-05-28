@@ -14,13 +14,14 @@ import FormInput from '../formInput/formInput-comp';
 const PlaylistsCollection = () => {
 	const [ openModal, setOpenModal ] = useState(false);
 	const { userId } = useParams();
-	const playlists = useFetchPlaylists(userId);
 	const [ formData, setFormData ] = useState({
 		name: '',
 		description: '',
 		access: '',
 		coverImgUrl: ''
 	});
+
+	const playlists = useFetchPlaylists(userId);
 
 	// const encodeImgFileAsUrl = imgFile => {
 	// 	const file = imgFile.files[0];

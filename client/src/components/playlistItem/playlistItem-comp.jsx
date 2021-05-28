@@ -15,7 +15,7 @@ const PlaylistItem = ({ id, name, playlistImgSmall, playlistUri, totalTracks, ow
 		<PlaylistItemContainer onClick={openPlaylist}>
 			<img src={playlistImgSmall?.url || placeholderImg} width="60" alt="img" />
 			<PlaylistInfo>
-				<PlaylistName>{name}</PlaylistName>
+				<PlaylistName>{name}{ path === 'search' ? ` (By ${owner.display_name})` : '' }</PlaylistName>
 				<p style={{ color: '#f1f1f1d8' }}>{totalTracks} tracks</p>
 			</PlaylistInfo>
 		</PlaylistItemContainer>
