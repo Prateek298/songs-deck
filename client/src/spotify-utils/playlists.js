@@ -41,7 +41,7 @@ export const getPlaylistTracks = async playlistId => {
 		const { body } = await spotifyApi.getPlaylist(playlistId);
 		return {
 			name: body.name,
-			tracks: mapOverTracks(body.tracks.items)
+			tracks: mapOverTracks(body.tracks.items, 'playlistPage')
 		};
 	} catch (err) {
 		console.log('Could not retrieve playlist info ', err);
@@ -53,15 +53,15 @@ export const getSearchResultsByTracks = async (searchTerm, cancelRequest) => {
 		if (cancelRequest) return;
 
 		const res = await spotifyApi.searchTracks(searchTerm);
-		return mapOverTracks(res.body.tracks.items);
+		return mapOverTracks(res.body.tracks.items, 'searchPage');
 	} catch (err) {
 		console.error('Error while searching \n', err);
 	}
 };
 
-function mapOverTracks(items) {
+function mapOverTracks(items, calledFrom) {
 	return items.map(item => {
-		const { artists, name, album, uri } = item.track;
+		const { artists, name, album, uri } = calledFrom === 'searchPage' ? item : item.track;
 		return {
 			artists: artists.map(artist => artist.name),
 			title: name,
@@ -71,3 +71,22 @@ function mapOverTracks(items) {
 		};
 	});
 }
+
+export const addTracksToPlaylist = async (playlistId, trackUris) => {
+	try {
+		await spotifyApi.addTracksToPlaylist(playlistId, trackUris);
+		console.log('Successfully added the track');
+	} catch (err) {
+		console.error('Error removing tracks from playlist', err);
+	}
+};
+
+export const removeTracksFromPlaylist = async (playlistId, trackUris) => {
+	try {
+		const reqFormatUris = [ { uri: trackUris[0] } ];
+		await spotifyApi.removeTracksFromPlaylist(playlistId, reqFormatUris);
+		console.log('Successfully removed the track');
+	} catch (err) {
+		console.error('Error removing tracks from playlist', err);
+	}
+};

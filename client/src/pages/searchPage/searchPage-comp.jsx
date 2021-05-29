@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { SearchPageContainer, SearchResContainer, ModalPlaylistName } from './searchPage-styles';
 
+import { UserContext } from '../../contexts';
 import useSearch from '../../customHooks/useSearch';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
-import useAddToPlaylist from '../../customHooks/useAddToPlaylist';
+import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 
 import SearchBox from '../../components/searchBox/searchBox-comp';
 import SongTrack from '../../components/songTrack/songTrack-comp';
@@ -12,21 +13,22 @@ import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
 import Modal from '../../components/modal/modal-comp';
 import SegmentedSelect from '../../components/segmentedSelect/segmentedSelect-comp';
 
-const SearchPage = ({ accessToken, userId }) => {
+const SearchPage = ({ accessToken }) => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const [ filter, setFilter ] = useState('track');
+	const currentUser = useContext(UserContext);
 
 	const searchResults = useSearch(accessToken, searchTerm, filter);
-	const playlists = useFetchPlaylists(userId);
-	const { openModal, setOpenModal, uriToAdd, addToPlaylist, longPress } = useAddToPlaylist();
+	const userPlaylists = useFetchPlaylists(currentUser.id);
+	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
 
 	return (
 		<SearchPageContainer>
 			<Modal open={openModal} setOpen={setOpenModal} addClose>
 				<h3>Add to Playlist</h3>
 				<hr style={{ margin: '10px 0' }} />
-				{playlists.map(playlist => (
-					<ModalPlaylistName key={playlist.id} onClick={() => addToPlaylist(playlist.id, [ uriToAdd ])}>
+				{userPlaylists.map(playlist => (
+					<ModalPlaylistName key={playlist.id} onClick={() => modifyPlaylist('add', playlist.id, [ trackUri ])}>
 						{playlist.name}
 					</ModalPlaylistName>
 				))}
@@ -39,7 +41,7 @@ const SearchPage = ({ accessToken, userId }) => {
 						filter === 'track' && searchResults.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)
 					}
 					{
-						filter === 'playlist' && searchResults.map(playlist => <PlaylistItem key={playlist.id} path="search" {...playlist} />)
+						filter === 'playlist' && searchResults.map(playlist => <PlaylistItem key={playlist.id} {...playlist} />)
 					}	
 				</SearchResContainer>
 			) : (

@@ -6,6 +6,11 @@ export const PlaylistsCollectionContainer = styled.main`
 	height: 100%;
 	width: clamp(300px, 92%, 900px);
 	margin: 0 auto;
+
+	& .list-container {
+		flex-grow: 1;
+		overflow-y: auto;
+	}
 `;
 
 export const PageTitle = styled.h1`

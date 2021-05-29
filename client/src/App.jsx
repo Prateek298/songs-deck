@@ -6,6 +6,7 @@ import './App.css';
 
 import useAuth from './customHooks/useAuth';
 import { getAuthenticatedUser } from './spotify-utils/users';
+import { UserContext } from './contexts';
 
 import Header from './components/header/header-comp';
 
@@ -43,31 +44,28 @@ const App = () => {
 	return (
 		<div className="app-container">
 			<Header {...userInfo} />
-			<Switch>
-				<Route
-					exact
-					path="/"
-					render={() => (code ? <UserDashboard accessToken={accessToken} /> : <LandingPage />)}
-				/>
-				<Route
-					exact
-					path="/search"
-					render={() =>
-						accessToken ? (
-							<SearchPage accessToken={accessToken} userId={userInfo.id} />
-						) : (
-							<Redirect to="/" />
-						)}
-				/>
-				<Route
-					path="/:trackId&:artist&:title"
-					render={() => (accessToken ? <PlayingPage accessToken={accessToken} /> : <Redirect to="/" />)}
-				/>
-				<Route
-					path="/:userId/playlists"
-					render={() => (accessToken ? <PlaylistPage /> : <Redirect to="/" />)}
-				/>
-			</Switch>
+			<UserContext.Provider value={userInfo}>
+				<Switch>
+					<Route
+						exact
+						path="/"
+						render={() => (code ? <UserDashboard accessToken={accessToken} /> : <LandingPage />)}
+					/>
+					<Route
+						exact
+						path="/search"
+						render={() => (accessToken ? <SearchPage accessToken={accessToken} /> : <Redirect to="/" />)}
+					/>
+					<Route
+						path="/:trackId&:artist&:title"
+						render={() => (accessToken ? <PlayingPage accessToken={accessToken} /> : <Redirect to="/" />)}
+					/>
+					<Route
+						path="/:userId/playlists"
+						render={() => (accessToken ? <PlaylistPage /> : <Redirect to="/" />)}
+					/>
+				</Switch>
+			</UserContext.Provider>
 		</div>
 	);
 };

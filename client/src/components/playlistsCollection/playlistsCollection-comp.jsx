@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PlaylistsCollectionContainer, PageTitle, AddNew, Plus, RadioOptions } from './playlistsCollection-styles';
 
 import { spotifyApi } from '../../App';
+import { UserContext } from '../../contexts';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 
 import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
@@ -11,7 +12,7 @@ import Modal from '../modal/modal-comp';
 import CustomButton from '../customButton/customButton-comp';
 import FormInput from '../formInput/formInput-comp';
 
-const PlaylistsCollection = () => {
+const PlaylistsCollection = ({ location: { visitedUser } }) => {
 	const [ openModal, setOpenModal ] = useState(false);
 	const { userId } = useParams();
 	const [ formData, setFormData ] = useState({
@@ -20,6 +21,7 @@ const PlaylistsCollection = () => {
 		access: '',
 		coverImgUrl: ''
 	});
+	const currentUser = useContext(UserContext);
 
 	const playlists = useFetchPlaylists(userId);
 
@@ -109,12 +111,16 @@ const PlaylistsCollection = () => {
 				</form>
 			</Modal>
 
-			<PageTitle>PlayList Page</PageTitle>
-			<AddNew onClick={() => setOpenModal(true)}>
-				<Plus>+</Plus>
-				<span style={{ fontWeight: 'bold', letterSpacing: '1.1px' }}>New Playlist</span>
-			</AddNew>
-			{playlists.map(playlist => <PlaylistItem key={playlist.id} {...playlist} path="own" />)}
+			<PageTitle>Playlists by {visitedUser?.id ? visitedUser.displayName : currentUser.displayName}</PageTitle>
+			{currentUser.id === userId ? (
+				<AddNew onClick={() => setOpenModal(true)}>
+					<Plus>+</Plus>
+					<span style={{ fontWeight: 'bold', letterSpacing: '1.1px' }}>New Playlist</span>
+				</AddNew>
+			) : null}
+			<div className="list-container">
+				{playlists.map(playlist => <PlaylistItem key={playlist.id} {...playlist} />)}
+			</div>
 		</PlaylistsCollectionContainer>
 	);
 };

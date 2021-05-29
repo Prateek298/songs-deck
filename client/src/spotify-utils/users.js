@@ -4,13 +4,26 @@ import { spotifyApi } from '../App';
 export const getAuthenticatedUser = async () => {
 	try {
 		const res = await spotifyApi.getMe();
-		const { id, display_name, images } = res.body;
-		return {
-			id,
-			displayName: display_name,
-			profileImg: images[0].url
-		};
+		return extractUserInfo(res);
 	} catch (err) {
 		console.error('Error while fetching user data', err);
 	}
 };
+
+export const getUserById = async userId => {
+	try {
+		const res = await spotifyApi.getUser(userId);
+		return extractUserInfo(res);
+	} catch (err) {
+		console.error('Error while fetching user data', err);
+	}
+};
+
+function extractUserInfo(res) {
+	const { id, display_name, images } = res.body;
+	return {
+		id,
+		displayName: display_name,
+		profileImg: images[0].url
+	};
+}
