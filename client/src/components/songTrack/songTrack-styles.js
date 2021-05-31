@@ -12,14 +12,13 @@ export const TrackInfo = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 3px 7px;
-`;
 
-export const Title = styled.h4`
-	margin-bottom: 3px;
-	color: orangered;
-`;
+	& .title {
+		margin-bottom: 3px;
+		color: orangered;
+	}
 
-// export const ModalPlaylistName = styled.p`
-// 	padding: 10px 5px;
-// 	letter-spacing: 1.2px;
-// `;
+	& > span {
+		color: whitesmoke;
+	}
+`;

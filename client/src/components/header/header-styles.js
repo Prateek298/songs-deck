@@ -17,17 +17,17 @@ export const LogoContainer = styled(Link)`
     width: 40px;
 `;
 
-export const ImgContainer = styled.div`
+export const ProfileImgContainer = styled.div`
 	height: 40px;
 	width: 40px;
 	border-radius: 50%;
 	overflow: hidden;
-`;
 
-export const ProfileImage = styled.img`
-	object-fit: contain;
-	height: 100%;
-	width: 100%;
+	& .profile-img {
+		object-fit: contain;
+		height: 100%;
+		width: 100%;
+	}
 `;
 
 export const PremiumLink = styled.a`

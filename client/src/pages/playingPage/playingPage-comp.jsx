@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import { PlayingPageContainer, PageTitle, LyricsContainer } from './playingPage-styles';
+import { PlayingPageContainer, LyricsContainer } from './playingPage-styles';
 
 import Player from '../../components/player/player-comp';
 
-const PlayingPage = ({ accessToken }) => {
+const PlayingPage = () => {
 	const [ lyrics, setLyrics ] = useState('');
 	const { trackId: trackUri, artist, title } = useParams();
 
@@ -28,11 +28,11 @@ const PlayingPage = ({ accessToken }) => {
 
 	return (
 		<PlayingPageContainer>
-			<PageTitle>Playing Now</PageTitle>
+			<h1 className="title">Playing Now</h1>
 			<LyricsContainer>
 				{lyrics}
 			</LyricsContainer>
-			<Player accessToken={accessToken} trackUri={trackUri} />
+			<Player trackUri={trackUri} />
 		</PlayingPageContainer>
 	);
 };

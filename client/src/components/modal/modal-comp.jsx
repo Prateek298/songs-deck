@@ -13,9 +13,7 @@ const Modal = ({ open, setOpen, addClose, children }) => {
 						<ModalCloseButton isSolid bg_color="red" color="#fff" onClick={() => setOpen(false)}>
 							Close
 						</ModalCloseButton>
-					) : (
-						console.log()
-					)}
+					) : null}
 				</ModalContent>
 			</ModalContainer>
 		</div>

@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 
-const Player = ({ accessToken, trackUri }) => {
+import { UserContext } from '../../contexts';
+
+const Player = ({ trackUri }) => {
+	const { accessToken } = useContext(UserContext);
+
 	if (!accessToken) return null;
 	const styles = {
 		bgColor: '#faecff',

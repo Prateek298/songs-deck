@@ -4,12 +4,13 @@ export const SearchPageContainer = styled.div`
 	height: calc(100% - 60px - 20px);
 	display: flex;
 	flex-direction: column;
-`;
 
-export const SearchResContainer = styled.div`
-	flex-grow: 1;
-	margin-top: 10px;
-	overflow-y: auto;
+	& .result-container {
+		flex-grow: 1;
+		margin: 10px auto 0;
+		overflow-y: auto;
+		width: clamp(250px, 85%, 650px);
+	}
 `;
 
 export const ModalPlaylistName = styled.p`

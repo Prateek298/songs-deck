@@ -1,23 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-import { PlaylistContainer, PageTitle, SongsList, ModalPlaylistName, RemoveTrack } from './playlist-styles';
+import { PlaylistContainer, PageTitle, ModalPlaylistName, RemoveTrack } from './playlist-styles';
 
 import { UserContext } from '../../contexts';
 import { getPlaylistTracks } from '../../spotify-utils/playlists';
-import { getUserById } from '../../spotify-utils/users';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 
 import SongTrack from '../songTrack/songTrack-comp';
 import Modal from '../modal/modal-comp';
 
-const Playlist = () => {
+const Playlist = ({ location: { visitedUser } }) => {
 	const { playlistId, userId } = useParams();
 	const [ playlistTracks, setPlaylistTracks ] = useState([]);
 	const [ playlistName, setPlaylistName ] = useState('');
-	const [ visitedUser, setVisitedUser ] = useState({});
-	const currentUser = useContext(UserContext);
+	const { currentUserId } = useContext(UserContext);
 
 	useEffect(
 		() => {
@@ -31,18 +29,7 @@ const Playlist = () => {
 		[ playlistId ]
 	);
 
-	useEffect(
-		() => {
-			if (currentUser.id !== userId) {
-				getUserById(userId).then(user => setVisitedUser(user));
-			}
-
-			return () => setVisitedUser({});
-		},
-		[ userId, currentUser ]
-	);
-
-	const playlists = useFetchPlaylists(currentUser.id);
+	const playlists = useFetchPlaylists(currentUserId);
 	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
 
 	return (
@@ -66,15 +53,15 @@ const Playlist = () => {
 
 			<PageTitle>
 				{playlistName}
-				{currentUser.id !== userId ? (
-					<Link to={{ pathname: `/${userId}/playlists`, visitedUser }}> (By {visitedUser.displayName})</Link>
+				{currentUserId !== userId ? (
+					<Link to={{ pathname: `/${userId}/playlists`, visitedUser }}> (By {visitedUser.display_name})</Link>
 				) : (
 					''
 				)}
 			</PageTitle>
-			<SongsList>
+			<div className="songs-list">
 				{playlistTracks.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)}
-			</SongsList>
+			</div>
 		</PlaylistContainer>
 	);
 };

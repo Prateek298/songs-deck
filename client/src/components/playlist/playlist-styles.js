@@ -6,6 +6,11 @@ export const PlaylistContainer = styled.main`
 	height: 100%;
 	width: clamp(300px, 92%, 900px);
 	margin: 0 auto;
+
+	& .songs-list {
+		flex-grow: 1;
+		overflow-y: auto;
+	}
 `;
 
 export const PageTitle = styled.h1`
@@ -18,11 +23,6 @@ export const PageTitle = styled.h1`
 			color: #2b706d;
 		}
 	}
-`;
-
-export const SongsList = styled.div`
-	flex-grow: 1;
-	overflow-y: auto;
 `;
 
 const highlightStyles = css`

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import { SearchPageContainer, SearchResContainer, ModalPlaylistName } from './searchPage-styles';
+import { SearchPageContainer, ModalPlaylistName } from './searchPage-styles';
 
 import { UserContext } from '../../contexts';
 import useSearch from '../../customHooks/useSearch';
@@ -13,13 +13,13 @@ import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
 import Modal from '../../components/modal/modal-comp';
 import SegmentedSelect from '../../components/segmentedSelect/segmentedSelect-comp';
 
-const SearchPage = ({ accessToken }) => {
+const SearchPage = () => {
 	const [ searchTerm, setSearchTerm ] = useState('');
 	const [ filter, setFilter ] = useState('track');
-	const currentUser = useContext(UserContext);
+	const { currentUserId, accessToken } = useContext(UserContext);
 
 	const searchResults = useSearch(accessToken, searchTerm, filter);
-	const userPlaylists = useFetchPlaylists(currentUser.id);
+	const userPlaylists = useFetchPlaylists(currentUserId);
 	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
 
 	return (
@@ -36,16 +36,16 @@ const SearchPage = ({ accessToken }) => {
 
 			<SearchBox searchTerm={searchTerm} handleChange={e => setSearchTerm(e.target.value)} />
 			{searchResults?.length ? (
-				<SearchResContainer>
+				<div className="result-container">
 					{
 						filter === 'track' && searchResults.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)
 					}
 					{
 						filter === 'playlist' && searchResults.map(playlist => <PlaylistItem key={playlist.id} {...playlist} />)
 					}	
-				</SearchResContainer>
+				</div>
 			) : (
-				<SegmentedSelect category="Search By:" inputName="filter" valueList={[ 'track', 'playlist' ]} categoryState={filter} setCategoryState={setFilter} />
+				<SegmentedSelect category="Search By:" inputName="filter" valueList={[ 'track', 'playlist' ]} categoryState={filter} handleChange={e => setFilter(e.target.value)} margin="20px auto 0" />
 			)}
 		</SearchPageContainer>
 	);

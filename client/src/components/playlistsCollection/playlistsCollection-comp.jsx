@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { PlaylistsCollectionContainer, PageTitle, AddNew, Plus, RadioOptions } from './playlistsCollection-styles';
+import { PlaylistsCollectionContainer, AddNew } from './playlistsCollection-styles';
 
 import { spotifyApi } from '../../App';
 import { UserContext } from '../../contexts';
@@ -9,6 +9,7 @@ import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 
 import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
 import Modal from '../modal/modal-comp';
+import SegmentedSelect from '../segmentedSelect/segmentedSelect-comp';
 import CustomButton from '../customButton/customButton-comp';
 import FormInput from '../formInput/formInput-comp';
 
@@ -18,10 +19,10 @@ const PlaylistsCollection = ({ location: { visitedUser } }) => {
 	const [ formData, setFormData ] = useState({
 		name: '',
 		description: '',
-		access: '',
+		access: 'public',
 		coverImgUrl: ''
 	});
-	const currentUser = useContext(UserContext);
+	const { displayName, currentUserId } = useContext(UserContext);
 
 	const playlists = useFetchPlaylists(userId);
 
@@ -89,33 +90,18 @@ const PlaylistsCollection = ({ location: { visitedUser } }) => {
 						handleChange={handleChange}
 						height="50px"
 					/> */}
-					<RadioOptions>
-						<FormInput
-							type="radio"
-							name="access"
-							value="public"
-							handleChange={handleChange}
-							label="public"
-						/>
-						<FormInput
-							type="radio"
-							name="access"
-							value="private"
-							handleChange={handleChange}
-							label="private"
-						/>
-					</RadioOptions>
+					<SegmentedSelect category="Access to:" inputName="access" valueList={['public', 'private']} categoryState={formData.access} handleChange={handleChange} forLightBg margin="10px auto"  />
 					<CustomButton type="submit" isSolid bg_color="#068c1f" color="#fff">
 						CREATE
 					</CustomButton>
 				</form>
 			</Modal>
 
-			<PageTitle>Playlists by {visitedUser?.id ? visitedUser.displayName : currentUser.displayName}</PageTitle>
-			{currentUser.id === userId ? (
+			<h1 className="title">Playlists by {visitedUser?.id ? visitedUser.display_name : displayName}</h1>
+			{currentUserId === userId ? (
 				<AddNew onClick={() => setOpenModal(true)}>
-					<Plus>+</Plus>
-					<span style={{ fontWeight: 'bold', letterSpacing: '1.1px' }}>New Playlist</span>
+					<span className="plus">+</span>
+					<span>New Playlist</span>
 				</AddNew>
 			) : null}
 			<div className="list-container">

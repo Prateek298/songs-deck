@@ -22,7 +22,7 @@ export const getUserById = async userId => {
 function extractUserInfo(res) {
 	const { id, display_name, images } = res.body;
 	return {
-		id,
+		currentUserId: id,
 		displayName: display_name,
 		profileImg: images[0].url
 	};

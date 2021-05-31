@@ -1,13 +1,23 @@
 import styled from 'styled-components';
 
+const forDarkBg = {
+	textColor: 'white',
+	highlightColor: '#06c77a'
+};
+
+const forLightBg = {
+	textColor: '#000',
+	highlightColor: '#021bbd'
+};
+
 export const SelectContainer = styled.div`
 	width: clamp(240px, 70%, 560px);
-	margin: 20px auto 0;
+	margin: ${props => props.margin};
 	display: flex;
 	flex-direction: column;
 
 	& > span {
-		color: white;
+		color: ${props => (props.forLightBg ? forLightBg.textColor : forDarkBg.textColor)};
 		font-weight: 1.2rem;
 		padding: 7px 0;
 	}
@@ -16,21 +26,21 @@ export const SelectContainer = styled.div`
 export const SegmentedControl = styled.div`
 	display: inline-block;
 	width: 100%;
-	border: 1px solid #06c77a;
+	border: 1px solid ${props => (props.forLightBg ? forLightBg.highlightColor : forDarkBg.highlightColor)};
 	overflow: hidden;
 	display: flex;
 `;
 
 export const Option = styled.span`
 	flex: 1;
-	color: white;
+	color: ${props => (props.forLightBg ? forLightBg.textColor : forDarkBg.textColor)};
 	text-align: center;
 
 	& > input {
 		appearance: none;
 
 		&:checked + label {
-			background-color: #06c77a;
+			background-color: ${props => (props.forLightBg ? forLightBg.highlightColor : forDarkBg.highlightColor)};
 		}
 	}
 

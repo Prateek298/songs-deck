@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Title, SongTrackContainer, TrackInfo } from './songTrack-styles';
+import { SongTrackContainer, TrackInfo } from './songTrack-styles';
 
 const SongTrack = ({ track, ...longPress }) => {
 	const history = useHistory();
@@ -16,8 +16,8 @@ const SongTrack = ({ track, ...longPress }) => {
 		<SongTrackContainer data-uri={track.uri} onClick={handleClick} {...longPress}>
 			<img src={albumImageUrl} alt="img" />
 			<TrackInfo>
-				<Title>{title}</Title>
-				<span style={{ color: 'whitesmoke' }}>{artistsString}</span>
+				<h4 className="title">{title}</h4>
+				<span>{artistsString}</span>
 			</TrackInfo>
 		</SongTrackContainer>
 	);

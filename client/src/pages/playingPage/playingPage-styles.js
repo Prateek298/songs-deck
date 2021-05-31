@@ -7,9 +7,11 @@ export const PlayingPageContainer = styled.main`
 	justify-content: space-around;
 	width: clamp(300px, 92%, 900px);
 	margin: 0 auto;
-`;
 
-export const PageTitle = styled.h1`color: orangered;`;
+	& .title {
+		color: orangered;
+	}
+`;
 
 export const LyricsContainer = styled.div`
 	background-color: #3cd6ad;

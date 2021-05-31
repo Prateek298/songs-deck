@@ -28,7 +28,8 @@ const App = () => {
 	const [ userInfo, setUserInfo ] = useState({
 		id: '',
 		displayName: '',
-		profileImg: ''
+		profileImg: '',
+		accessToken: ''
 	});
 
 	useEffect(
@@ -36,29 +37,21 @@ const App = () => {
 			if (!accessToken) return;
 
 			spotifyApi.setAccessToken(accessToken);
-			getAuthenticatedUser().then(userData => setUserInfo(userData));
+			getAuthenticatedUser().then(userData => setUserInfo({ ...userData, accessToken }));
 		},
 		[ accessToken ]
 	);
 
 	return (
 		<div className="app-container">
-			<Header {...userInfo} />
 			<UserContext.Provider value={userInfo}>
+				<Header />
 				<Switch>
-					<Route
-						exact
-						path="/"
-						render={() => (code ? <UserDashboard accessToken={accessToken} /> : <LandingPage />)}
-					/>
-					<Route
-						exact
-						path="/search"
-						render={() => (accessToken ? <SearchPage accessToken={accessToken} /> : <Redirect to="/" />)}
-					/>
+					<Route exact path="/" render={() => (code ? <UserDashboard /> : <LandingPage />)} />
+					<Route exact path="/search" render={() => (accessToken ? <SearchPage /> : <Redirect to="/" />)} />
 					<Route
 						path="/:trackId&:artist&:title"
-						render={() => (accessToken ? <PlayingPage accessToken={accessToken} /> : <Redirect to="/" />)}
+						render={() => (accessToken ? <PlayingPage /> : <Redirect to="/" />)}
 					/>
 					<Route
 						path="/:userId/playlists"
