@@ -29,8 +29,7 @@ function mapOverPlaylists(items) {
 			name,
 			owner,
 			playlistUri: uri,
-			playlistImgMedium: images[1],
-			playlistImgSmall: images[2],
+			playlistImg: images[2],
 			totalTracks: tracks.total
 		};
 	});
@@ -88,5 +87,14 @@ export const removeTracksFromPlaylist = async (playlistId, trackUris) => {
 		console.log('Successfully removed the track');
 	} catch (err) {
 		console.error('Error removing tracks from playlist', err);
+	}
+};
+
+export const getPlaylistsForCategory = async category => {
+	try {
+		const res = await spotifyApi.getPlaylistsForCategory(category, { limit: 5 });
+		console.log(res);
+	} catch (err) {
+		console.error('Error fetching new releases', err);
 	}
 };

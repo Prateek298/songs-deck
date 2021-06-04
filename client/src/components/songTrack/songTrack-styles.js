@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const SongTrackContainer = styled.div`
 	display: flex;
+	flex-direction: ${props => (props.vertical ? 'column' : 'row')};
 	width: fit-content;
 	padding: 10px 5px;
 	margin-bottom: 5px;

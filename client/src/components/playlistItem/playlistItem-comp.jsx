@@ -5,7 +5,7 @@ import { PlaylistItemContainer, PlaylistInfo } from './playlistItem-styles';
 
 import { UserContext } from '../../contexts';
 
-const PlaylistItem = ({ id, name, playlistImgSmall, playlistUri, totalTracks, owner }) => {
+const PlaylistItem = ({ id, name, playlistImg, playlistUri, totalTracks, owner, vertical }) => {
 	const [ redirect, setRedirect ] = useState(false);
 	const { currentUserId } = useContext(UserContext);
 
@@ -14,11 +14,11 @@ const PlaylistItem = ({ id, name, playlistImgSmall, playlistUri, totalTracks, ow
 
 	if (redirect) return <Redirect to={{ pathname: `/${owner.id}/playlists/${id}`, visitedUser: owner}} />
 	return (
-		<PlaylistItemContainer onClick={openPlaylist}>
-			<img src={playlistImgSmall?.url || placeholderImg} width="60" alt="img" />
-			<PlaylistInfo>
-				<h4 className="playlist-name">{name}{ currentUserId !== owner.id ? ` (By ${owner.display_name})` : '' }</h4>
-				<p style={{ color: '#f1f1f1d8' }}>{totalTracks} tracks</p>
+		<PlaylistItemContainer vertical={vertical} onClick={openPlaylist}>
+			<img src={playlistImg?.url || placeholderImg} width={vertical ? "120" : "60"} alt="img" />
+			<PlaylistInfo vertical={vertical}>
+				<h4 className="playlist-name">{name}<span>{currentUserId !== owner.id ? ` (By ${owner.display_name})` : '' }</span></h4>
+				{ !vertical && <p style={{ color: '#f1f1f1d8' }}>{totalTracks} tracks</p> }
 			</PlaylistInfo>
 		</PlaylistItemContainer>
 	);

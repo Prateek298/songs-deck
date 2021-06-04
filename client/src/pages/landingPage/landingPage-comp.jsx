@@ -5,7 +5,7 @@ import { LandingPageContainer, LandingHeading, LandingText } from './landingPage
 import CustomButton from '../../components/customButton/customButton-comp';
 
 const AUTH_URL =
-	'https://accounts.spotify.com/authorize?client_id=2e8fb2e6ac3f4263a0723091d84e3f8a&response_type=code&redirect_uri=http://localhost:3000/&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20playlist-modify-public%20playlist-modify-private%20ugc-image-upload%20user-modify-playback-state';
+	'https://accounts.spotify.com/authorize?client_id=2e8fb2e6ac3f4263a0723091d84e3f8a&response_type=code&redirect_uri=http://localhost:3000/&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20playlist-modify-public%20playlist-modify-private%20ugc-image-upload%20user-modify-playback-state%20user-read-recently-played';
 
 const LandingPage = () => {
 	return (
