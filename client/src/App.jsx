@@ -15,6 +15,8 @@ import UserDashboard from './pages/userDashboard/userDashboard-comp';
 import SearchPage from './pages/searchPage/searchPage-comp';
 import PlayingPage from './pages/playingPage/playingPage-comp';
 import PlaylistPage from './pages/playlistPage/playlistPage-comp';
+import ArtistPage from './pages/artistPage/artistPage-comp';
+import Album from './components/album/album-comp';
 
 export const spotifyApi = new SpotifyWebApi({
 	clientId: '2e8fb2e6ac3f4263a0723091d84e3f8a'
@@ -56,6 +58,16 @@ const App = () => {
 					<Route
 						path="/:userId/playlists"
 						render={() => (accessToken ? <PlaylistPage /> : <Redirect to="/" />)}
+					/>
+					<Route
+						exact
+						path="/artists/:artistId"
+						render={() => (accessToken ? <ArtistPage /> : <Redirect to="/" />)}
+					/>
+					<Route
+						exact
+						path="/albums/:albumId"
+						render={() => (accessToken ? <Album /> : <Redirect to="/" />)}
 					/>
 				</Switch>
 			</UserContext.Provider>

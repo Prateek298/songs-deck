@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
+import { UserContext } from '../contexts';
 import { getSearchResultsByTracks, getSearchResultsByPlaylists } from '../spotify-utils/playlists';
+import { getSearchResultsByArtists } from '../spotify-utils/artists';
 
-const useSearch = (accessToken, searchTerm, filter) => {
+const useSearch = (searchTerm, filter) => {
 	const [ searchResults, setSearchResults ] = useState([]);
+	const { accessToken } = useContext(UserContext);
 
 	useEffect(
 		() => {
@@ -16,6 +19,8 @@ const useSearch = (accessToken, searchTerm, filter) => {
 				getSearchResultsByTracks(searchTerm, cancelRequest).then(res => setSearchResults(res));
 			else if (filter === 'playlist')
 				getSearchResultsByPlaylists(searchTerm, cancelRequest).then(res => setSearchResults(res));
+			else if (filter === 'artist')
+				getSearchResultsByArtists(searchTerm, cancelRequest).then(res => setSearchResults(res));
 
 			return () => (cancelRequest = true);
 		},

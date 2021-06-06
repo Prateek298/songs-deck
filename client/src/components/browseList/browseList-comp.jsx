@@ -9,7 +9,8 @@ const BrowseList = ({ by, items }) => {
 	const codeToCriteria = {
 		nw: 'New Releases',
 		fp: 'Featured Playlists',
-		recc: 'You may Like'
+		recc: 'You may Like',
+		alb: 'Albums'
 	};
 
 	return (
@@ -20,8 +21,9 @@ const BrowseList = ({ by, items }) => {
 			</div>
 			<ListContainer>
 				{(by === 'nw' || by === 'recc') &&
-					items.map(item => <SongTrack key={item.uri} track={item} vertical />)}
+					items.map(item => <SongTrack key={item.uri} track={item} vertical showImg />)}
 				{by === 'fp' && items.map(item => <PlaylistItem key={item.id} {...item} vertical />)}
+				{by === 'alb' && items.map(item => <PlaylistItem key={item.id} {...item} vertical album />)}
 			</ListContainer>
 		</BrowseListContainer>
 	);

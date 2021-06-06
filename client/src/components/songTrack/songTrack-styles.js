@@ -19,7 +19,11 @@ export const TrackInfo = styled.div`
 		color: orangered;
 	}
 
-	& > span {
+	& .album {
+		color: #45a29e;
+	}
+
+	& .artist {
 		color: whitesmoke;
 	}
 `;

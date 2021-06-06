@@ -15,10 +15,12 @@ const Playlist = ({ location: { visitedUser } }) => {
 	const { playlistId, userId } = useParams();
 	const [ playlistTracks, setPlaylistTracks ] = useState([]);
 	const [ playlistName, setPlaylistName ] = useState('');
-	const { currentUserId } = useContext(UserContext);
+	const { currentUserId, accessToken } = useContext(UserContext);
 
 	useEffect(
 		() => {
+			if (!accessToken) return;
+
 			getPlaylistTracks(playlistId).then(({ name, tracks }) => {
 				setPlaylistName(name);
 				setPlaylistTracks(tracks);
@@ -26,7 +28,7 @@ const Playlist = ({ location: { visitedUser } }) => {
 
 			return () => setPlaylistTracks([]);
 		},
-		[ playlistId ]
+		[ accessToken, playlistId ]
 	);
 
 	const playlists = useFetchPlaylists(currentUserId);
@@ -60,7 +62,7 @@ const Playlist = ({ location: { visitedUser } }) => {
 				)}
 			</PageTitle>
 			<div className="songs-list">
-				{playlistTracks.map(track => <SongTrack key={track.uri} track={track} {...longPress} />)}
+				{playlistTracks.map(track => <SongTrack key={track.uri} track={track} showImg {...longPress} />)}
 			</div>
 		</PlaylistContainer>
 	);
