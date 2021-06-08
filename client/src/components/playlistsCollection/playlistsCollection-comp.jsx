@@ -2,12 +2,13 @@ import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PlaylistsCollectionContainer, AddNew } from './playlistsCollection-styles';
+import { Loader } from '../../common-styles';
 
 import { spotifyApi } from '../../App';
 import { UserContext } from '../../contexts';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 
-import PlaylistItem from '../../components/playlistItem/playlistItem-comp';
+import BrowseList from '../browseList/browseList-comp';
 import Modal from '../modal/modal-comp';
 import SegmentedSelect from '../segmentedSelect/segmentedSelect-comp';
 import CustomButton from '../customButton/customButton-comp';
@@ -65,7 +66,7 @@ const PlaylistsCollection = ({ location: { visitedUser } }) => {
 		});
 	};
 
-	return (
+	return !playlists.length ? <Loader type="bars" color="#06c77a" /> : (
 		<PlaylistsCollectionContainer>
 			<Modal open={openModal} setOpen={setOpenModal}>
 				<form onSubmit={handleSubmit}>
@@ -104,9 +105,7 @@ const PlaylistsCollection = ({ location: { visitedUser } }) => {
 					<span>New Playlist</span>
 				</AddNew>
 			) : null}
-			<div className="list-container">
-				{playlists.map(playlist => <PlaylistItem key={playlist.id} {...playlist} />)}
-			</div>
+			<BrowseList by="usrp" items={playlists} />
 		</PlaylistsCollectionContainer>
 	);
 };

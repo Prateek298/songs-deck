@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const PlaylistContainer = styled.main`
 	display: flex;
@@ -6,11 +6,6 @@ export const PlaylistContainer = styled.main`
 	height: 100%;
 	width: clamp(300px, 92%, 900px);
 	margin: 0 auto;
-
-	& .songs-list {
-		flex-grow: 1;
-		overflow-y: auto;
-	}
 `;
 
 export const PageTitle = styled.h1`
@@ -23,25 +18,4 @@ export const PageTitle = styled.h1`
 			color: #2b706d;
 		}
 	}
-`;
-
-const highlightStyles = css`
-	cursor: pointer;
-
-	&:hover,
-	&:active {
-		background-color: rgba(0, 0, 0, 0.3);
-	}
-`;
-
-export const ModalPlaylistName = styled.p`
-	padding: 10px 5px;
-	letter-spacing: 1.2px;
-	${highlightStyles};
-`;
-
-export const RemoveTrack = styled.h4`
-	color: red;
-	padding: 10px 5px;
-	${highlightStyles};
 `;

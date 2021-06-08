@@ -20,10 +20,11 @@ export const getUserById = async userId => {
 };
 
 function extractUserInfo(res) {
-	const { id, display_name, images } = res.body;
+	const { id, display_name, images, country } = res.body;
 	return {
 		currentUserId: id,
 		displayName: display_name,
-		profileImg: images[0].url
+		profileImg: images[0].url,
+		country
 	};
 }

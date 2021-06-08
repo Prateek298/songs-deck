@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { DashboardContainer } from './userDashboard-styles';
+import { Loader, PageContainer } from '../../common-styles';
 
 import useFetchForBrowsing from '../../customHooks/useFetchForBrowsing';
 
 import BrowseList from '../../components/browseList/browseList-comp';
 
 const UserDashboard = () => {
-	const { newReleases, recommendations, featPlaylists } = useFetchForBrowsing();
+	const { newReleases, recommendations, featPlaylists, isLoading } = useFetchForBrowsing();
 
-	return (
-		<DashboardContainer>
-			<BrowseList key="nw" by="nw" items={newReleases} />
-			<BrowseList key="recc" by="recc" items={recommendations} />
-			<BrowseList key="fp" by="fp" items={featPlaylists} />
-		</DashboardContainer>
+	return isLoading ? (
+		<Loader type="bars" color="#06c77a" />
+	) : (
+		<PageContainer>
+			<BrowseList key="nw" by="nw" items={newReleases} showTitle lateral />
+			<BrowseList key="recc" by="recc" items={recommendations} showTitle lateral />
+			<BrowseList key="fp" by="fp" items={featPlaylists} showTitle lateral />
+		</PageContainer>
 	);
 };
 

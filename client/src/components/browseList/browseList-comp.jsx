@@ -4,26 +4,49 @@ import { BrowseListContainer, ListContainer } from './browseList-styles';
 
 import SongTrack from '../songTrack/songTrack-comp';
 import PlaylistItem from '../playlistItem/playlistItem-comp';
+import ArtistItem from '../artistItem/artistItem-comp';
 
-const BrowseList = ({ by, items }) => {
+const BrowseList = ({ by, items, lateral, showTitle, ...otherProps }) => {
 	const codeToCriteria = {
 		nw: 'New Releases',
 		fp: 'Featured Playlists',
 		recc: 'You may Like',
-		alb: 'Albums'
+		alb: 'Albums',
+		st: 'Searched Tracks',
+		sp: 'Searched Playlists',
+		sa: 'Searched Artists',
+		usrp: 'User Playlists',
+		pt: 'Playlist Tracks',
+		albt: 'Album Tracks'
 	};
 
 	return (
-		<BrowseListContainer>
-			<div className="head">
-				<h2>{codeToCriteria[by]}</h2>
-				<p>&gt;&gt;View More</p>
-			</div>
-			<ListContainer>
+		<BrowseListContainer lateral={lateral} by={by}>
+			{showTitle ? (
+				<div className="head">
+					<h2>{codeToCriteria[by]}</h2>
+					<p>&gt;&gt;View More</p>
+				</div>
+			) : null}
+			<ListContainer lateral={lateral} by={by}>
 				{(by === 'nw' || by === 'recc') &&
 					items.map(item => <SongTrack key={item.uri} track={item} vertical showImg />)}
+				{(by === 'st' || by === 'pt') &&
+					items.map(item => <SongTrack key={item.uri} track={item} showImg {...otherProps.longPress} />)}
+				{by === 'albt' &&
+					items.map(item => (
+						<SongTrack
+							key={item.uri}
+							track={{ ...item, artists: otherProps.artists }}
+							{...otherProps.longPress}
+						/>
+					))}
+
 				{by === 'fp' && items.map(item => <PlaylistItem key={item.id} {...item} vertical />)}
 				{by === 'alb' && items.map(item => <PlaylistItem key={item.id} {...item} vertical album />)}
+				{(by === 'sp' || by === 'usrp') && items.map(item => <PlaylistItem key={item.id} {...item} />)}
+
+				{by === 'sa' && items.map(item => <ArtistItem key={item.id} {...item} />)}
 			</ListContainer>
 		</BrowseListContainer>
 	);

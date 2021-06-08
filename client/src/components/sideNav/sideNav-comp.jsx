@@ -28,13 +28,13 @@ const SideNav = ({ userId }) => {
 						<WordLogo src={logo2} />
 						<NavClose onClick={closeNav}>&times;</NavClose>
 						<NavList>
-							<NavItem>
+							<NavItem onClick={closeNav}>
 								<NavItemLink to="/">HOME</NavItemLink>
 							</NavItem>
-							<NavItem>
+							<NavItem onClick={closeNav}>
 								<NavItemLink to="/search">SEARCH</NavItemLink>
 							</NavItem>
-							<NavItem>
+							<NavItem onClick={closeNav}>
 								<NavItemLink to={`/${userId}/playlists`}>PLAYLISTS</NavItemLink>
 							</NavItem>
 						</NavList>

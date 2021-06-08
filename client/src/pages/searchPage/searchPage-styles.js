@@ -1,25 +1,13 @@
 import styled from 'styled-components';
+import { page_styles } from '../../common-styles';
 
 export const SearchPageContainer = styled.div`
-	height: calc(100% - 60px - 20px);
-	display: flex;
-	flex-direction: column;
+	${page_styles};
+	align-items: unset;
 
-	& .result-container {
+	& .search-container {
 		flex-grow: 1;
-		margin: 10px auto 0;
-		overflow-y: auto;
-		width: clamp(250px, 85%, 650px);
-	}
-`;
-
-export const ModalPlaylistName = styled.p`
-	padding: 10px 5px;
-	letter-spacing: 1.2px;
-	cursor: pointer;
-
-	&:hover,
-	&:active {
-		background-color: rgba(0, 0, 0, 0.5);
+		margin-top: 10px;
+		height: 90%;
 	}
 `;

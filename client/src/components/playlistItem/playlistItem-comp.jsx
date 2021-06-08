@@ -18,7 +18,7 @@ const PlaylistItem = ({ id, name, playlistImg, playlistUri, totalTracks, owner, 
 		<PlaylistItemContainer vertical={vertical} onClick={openPlaylist}>
 			<img src={playlistImg?.url || placeholderImg} width={vertical ? "120" : "60"} alt="img" />
 			<PlaylistInfo vertical={vertical}>
-				<h4 className="playlist-name">{name}<span>{currentUserId !== owner.id ? ` (By ${owner.display_name})` : '' }</span></h4>
+				<h4 className="playlist-name">{vertical ? name.length > 20 ? `${name.slice(0,20)}...` : name : name}<span>{currentUserId !== owner.id ? ` (By ${owner.display_name})` : '' }</span></h4>
 				{ !vertical && <p style={{ color: '#f1f1f1d8' }}>{totalTracks} tracks</p> }
 			</PlaylistInfo>
 		</PlaylistItemContainer>

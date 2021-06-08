@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-import { PlaylistContainer, PageTitle, ModalPlaylistName, RemoveTrack } from './playlist-styles';
+import { PlaylistContainer, PageTitle } from './playlist-styles';
+import { Loader } from '../../common-styles';
 
 import { UserContext } from '../../contexts';
 import { getPlaylistTracks } from '../../spotify-utils/playlists';
-import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 
-import SongTrack from '../songTrack/songTrack-comp';
-import Modal from '../modal/modal-comp';
+import AddTrackModal from '../addTrackModal/addTrackModal-comp';
+import BrowseList from '../browseList/browseList-comp';
 
 const Playlist = ({ location: { visitedUser } }) => {
 	const { playlistId, userId } = useParams();
@@ -31,27 +31,13 @@ const Playlist = ({ location: { visitedUser } }) => {
 		[ accessToken, playlistId ]
 	);
 
-	const playlists = useFetchPlaylists(currentUserId);
-	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
+	const { longPress, ...passToModalProps } = useModifyPlaylist();
 
-	return (
+	return !playlistTracks.length ? (
+		<Loader type="bars" color="#06c77a" />
+	) : (
 		<PlaylistContainer>
-			<Modal open={openModal} setOpen={setOpenModal} addClose>
-				<h3>Add to Playlist</h3>
-				<hr style={{ margin: '10px 0' }} />
-				{playlists.map(playlist => (
-					<ModalPlaylistName
-						key={playlist.id}
-						onClick={() => modifyPlaylist('add', playlist.id, [ trackUri ])}
-					>
-						{playlist.name}
-					</ModalPlaylistName>
-				))}
-				<hr style={{ margin: '10px 0' }} />
-				<RemoveTrack onClick={() => modifyPlaylist('remove', playlistId, [ trackUri ])}>
-					Remove from Playlist
-				</RemoveTrack>
-			</Modal>
+			<AddTrackModal {...passToModalProps} playlistId={playlistId} removeBtn />
 
 			<PageTitle>
 				{playlistName}
@@ -61,9 +47,7 @@ const Playlist = ({ location: { visitedUser } }) => {
 					''
 				)}
 			</PageTitle>
-			<div className="songs-list">
-				{playlistTracks.map(track => <SongTrack key={track.uri} track={track} showImg {...longPress} />)}
-			</div>
+			<BrowseList by="pt" items={playlistTracks} longPress={longPress} />
 		</PlaylistContainer>
 	);
 };

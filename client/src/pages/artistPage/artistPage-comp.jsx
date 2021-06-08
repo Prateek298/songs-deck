@@ -1,50 +1,47 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ArtistPageContainer, ModalPlaylistName } from './artistPage-styles';
+import { ArtistPageContainer } from './artistPage-styles';
+import { Loader } from '../../common-styles';
 
 import { UserContext } from '../../contexts';
-import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 import { getArtistAlbums, getArtistTopTracks } from '../../spotify-utils/artists';
 
-import Modal from '../../components/modal/modal-comp';
+import AddTrackModal from '../../components/addTrackModal/addTrackModal-comp';
 import BrowseList from '../../components/browseList/browseList-comp';
 import SongTrack from '../../components/songTrack/songTrack-comp';
 
 const ArtistPage = () => {
 	const [ albums, setAlbums ] = useState([]);
 	const [ topTracks, setTopTracks ] = useState([]);
+	const [ requestsCompleted, setRequestsCompleted ] = useState(0);
 	const { artistId } = useParams();
-	const { accessToken, currentUserId } = useContext(UserContext);
+	const { accessToken, country } = useContext(UserContext);
 
-	const playlists = useFetchPlaylists(currentUserId);
-	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
+	const { longPress, ...passToModalProps } = useModifyPlaylist();
 
 	useEffect(
 		() => {
 			if (!accessToken) return;
 
-			getArtistAlbums(artistId).then(res => setAlbums(res));
-			getArtistTopTracks(artistId, 'IN').then(res => setTopTracks(res));
+			getArtistAlbums(artistId).then(res => {
+				setAlbums(res);
+				setRequestsCompleted(val => val + 1);
+			});
+			getArtistTopTracks(artistId, country).then(res => {
+				setTopTracks(res);
+				setRequestsCompleted(val => val + 1);
+			});
 		},
-		[ accessToken, artistId ]
+		[ accessToken, artistId, country ]
 	);
 
-	return (
+	return requestsCompleted !== 2 ? (
+		<Loader type="bars" color="#06c77a" />
+	) : (
 		<ArtistPageContainer>
-			<Modal open={openModal} setOpen={setOpenModal} addClose>
-				<h3>Add to Playlist</h3>
-				<hr style={{ margin: '10px 0' }} />
-				{playlists.map(playlist => (
-					<ModalPlaylistName
-						key={playlist.id}
-						onClick={() => modifyPlaylist('add', playlist.id, [ trackUri ])}
-					>
-						{playlist.name}
-					</ModalPlaylistName>
-				))}
-			</Modal>
+			<AddTrackModal {...passToModalProps} />
 
 			<h1>{albums.length ? albums[0].owner.display_name : ''}</h1>
 			<div className="top-tracks">
@@ -56,7 +53,7 @@ const ArtistPage = () => {
 					</div>
 				))}
 			</div>
-			<BrowseList by="alb" items={albums} />
+			<BrowseList by="alb" items={albums} showTitle lateral />
 		</ArtistPageContainer>
 	);
 };

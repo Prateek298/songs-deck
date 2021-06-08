@@ -7,16 +7,25 @@ const useFetchForBrowsing = () => {
 	const [ newReleases, setNewReleases ] = useState([]);
 	const [ recommendations, setRecommendations ] = useState([]);
 	const [ featPlaylists, setFeatPlaylists ] = useState([]);
+	const [ completedRequests, setCompletedRequests ] = useState(0);
 	const { accessToken } = useContext(UserContext);
 
 	useEffect(
 		() => {
 			if (!accessToken) return;
 
-			getNewReleases().then(res => setNewReleases(res));
-			getRecommendations().then(res => setRecommendations(res));
-			getFeaturedPlaylists().then(res => setFeatPlaylists(res));
-			// getCategories().then(res => console.log(res));
+			getNewReleases().then(res => {
+				setNewReleases(res);
+				setCompletedRequests(val => val + 1);
+			});
+			getRecommendations().then(res => {
+				setRecommendations(res);
+				setCompletedRequests(val => val + 1);
+			});
+			getFeaturedPlaylists().then(res => {
+				setFeatPlaylists(res);
+				setCompletedRequests(val => val + 1);
+			});
 		},
 		[ accessToken ]
 	);
@@ -24,7 +33,8 @@ const useFetchForBrowsing = () => {
 	return {
 		newReleases,
 		recommendations,
-		featPlaylists
+		featPlaylists,
+		isLoading: completedRequests !== 3
 	};
 };
 

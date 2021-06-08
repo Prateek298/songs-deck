@@ -4,7 +4,9 @@ export const BrowseListContainer = styled.section`
 	display: flex;
 	flex-direction: column;
 	width: clamp(250px, 90%, 900px);
-	margin-bottom: 8px;
+	height: 100%;
+	margin: ${props => (props.by === 'usrp' || props.by === 'pt' ? '0' : '0 auto')};
+	overflow-y: ${props => (props.lateral ? 'unset' : 'auto')};
 
 	& .head {
 		display: flex;
@@ -28,7 +30,11 @@ export const BrowseListContainer = styled.section`
 
 export const ListContainer = styled.div`
 	display: flex;
+	flex-direction: ${props => (props.lateral ? 'row' : 'column')};
+	flex-grow: 1;
 	width: 100%;
-	overflow-x: auto;
-	margin-top: 10px;
+	height: 100%;
+	overflow-y: ${props => (props.lateral ? 'unset' : 'auto')};
+	overflow-x: ${props => (props.lateral ? 'auto' : 'unset')};
+	margin: ${props => (props.lateral ? '10px 0 0' : props.by === 'usrp' || props.by === 'pt' ? '0' : '10px auto 0')};
 `;

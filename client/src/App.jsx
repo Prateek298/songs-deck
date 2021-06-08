@@ -31,6 +31,7 @@ const App = () => {
 		id: '',
 		displayName: '',
 		profileImg: '',
+		country: '',
 		accessToken: ''
 	});
 

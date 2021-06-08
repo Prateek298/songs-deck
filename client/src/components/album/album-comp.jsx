@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { AlbumContainer, PageTitle, ModalPlaylistName } from './album-styles';
+import { AlbumContainer, PageTitle } from './album-styles';
 
 import { UserContext } from '../../contexts';
-import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 import { getAlbumById } from '../../spotify-utils/artists';
 
-import Modal from '../modal/modal-comp';
-import SongTrack from '../../components/songTrack/songTrack-comp';
+import AddTrackModal from '../addTrackModal/addTrackModal-comp';
+import BrowseList from '../browseList/browseList-comp';
 
 const Album = () => {
 	const [ albumInfo, setAlbumInfo ] = useState({
@@ -18,7 +17,7 @@ const Album = () => {
 		albumImg: {},
 		tracks: []
 	});
-	const { accessToken, currentUserId } = useContext(UserContext);
+	const { accessToken } = useContext(UserContext);
 	const { albumId } = useParams();
 
 	useEffect(
@@ -30,29 +29,15 @@ const Album = () => {
 		[ accessToken, albumId ]
 	);
 
-	const { albumName, artists, albumImg, tracks } = albumInfo;
-	const playlists = useFetchPlaylists(currentUserId);
-	const { openModal, setOpenModal, trackUri, modifyPlaylist, longPress } = useModifyPlaylist();
+	const { albumName, artists, tracks } = albumInfo;
+	const { longPress, ...passToModalProps } = useModifyPlaylist();
 
 	return (
 		<AlbumContainer>
-			<Modal open={openModal} setOpen={setOpenModal} addClose>
-				<h3>Add to Playlist</h3>
-				<hr style={{ margin: '10px 0' }} />
-				{playlists.map(playlist => (
-					<ModalPlaylistName
-						key={playlist.id}
-						onClick={() => modifyPlaylist('add', playlist.id, [ trackUri ])}
-					>
-						{playlist.name}
-					</ModalPlaylistName>
-				))}
-			</Modal>
+			<AddTrackModal {...passToModalProps} />
 
 			<PageTitle>{albumName}</PageTitle>
-			<div className="songs-list">
-				{tracks.map(track => <SongTrack key={track.uri} track={{ ...track, artists }} {...longPress} />)}
-			</div>
+			<BrowseList by="albt" items={tracks} artists={artists} longPress={longPress} />
 		</AlbumContainer>
 	);
 };

@@ -11,11 +11,6 @@ export const PlaylistsCollectionContainer = styled.main`
 		color: orangered;
 		margin-bottom: 15px;
 	}
-
-	& .list-container {
-		flex-grow: 1;
-		overflow-y: auto;
-	}
 `;
 
 export const AddNew = styled.div`

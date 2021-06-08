@@ -74,7 +74,6 @@ function mapOverTracks(items, calledFrom) {
 export const addTracksToPlaylist = async (playlistId, trackUris) => {
 	try {
 		await spotifyApi.addTracksToPlaylist(playlistId, trackUris);
-		console.log('Successfully added the track');
 	} catch (err) {
 		console.error('Error removing tracks from playlist', err);
 	}
@@ -84,7 +83,6 @@ export const removeTracksFromPlaylist = async (playlistId, trackUris) => {
 	try {
 		const reqFormatUris = [ { uri: trackUris[0] } ];
 		await spotifyApi.removeTracksFromPlaylist(playlistId, reqFormatUris);
-		console.log('Successfully removed the track');
 	} catch (err) {
 		console.error('Error removing tracks from playlist', err);
 	}
