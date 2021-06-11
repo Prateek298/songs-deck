@@ -37,6 +37,9 @@ const SideNav = ({ userId }) => {
 							<NavItem onClick={closeNav}>
 								<NavItemLink to={`/${userId}/playlists`}>PLAYLISTS</NavItemLink>
 							</NavItem>
+							<NavItem onClick={closeNav}>
+								<NavItemLink to="/chat">CHAT</NavItemLink>
+							</NavItem>
 						</NavList>
 					</InnerNav>
 				</MidNav>

@@ -7,6 +7,7 @@ import './App.css';
 import useAuth from './customHooks/useAuth';
 import { getAuthenticatedUser } from './spotify-utils/users';
 import { UserContext } from './contexts';
+import { createUserDocument } from './firebase';
 
 import Header from './components/header/header-comp';
 
@@ -16,6 +17,7 @@ import SearchPage from './pages/searchPage/searchPage-comp';
 import PlayingPage from './pages/playingPage/playingPage-comp';
 import PlaylistPage from './pages/playlistPage/playlistPage-comp';
 import ArtistPage from './pages/artistPage/artistPage-comp';
+import ChatPage from './pages/chatPage/chatPage-comp';
 import Album from './components/album/album-comp';
 
 export const spotifyApi = new SpotifyWebApi({
@@ -29,6 +31,7 @@ const App = () => {
 
 	const [ userInfo, setUserInfo ] = useState({
 		id: '',
+		email: '',
 		displayName: '',
 		profileImg: '',
 		country: '',
@@ -40,7 +43,10 @@ const App = () => {
 			if (!accessToken) return;
 
 			spotifyApi.setAccessToken(accessToken);
-			getAuthenticatedUser().then(userData => setUserInfo({ ...userData, accessToken }));
+			getAuthenticatedUser().then(userData => {
+				setUserInfo({ ...userData, accessToken });
+				createUserDocument(userData);
+			});
 		},
 		[ accessToken ]
 	);
@@ -70,6 +76,7 @@ const App = () => {
 						path="/albums/:albumId"
 						render={() => (accessToken ? <Album /> : <Redirect to="/" />)}
 					/>
+					<Route path="/chat" render={() => (accessToken ? <ChatPage /> : <Redirect to="/" />)} />
 				</Switch>
 			</UserContext.Provider>
 		</div>

@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../contexts';
 import { getSearchResultsByTracks, getSearchResultsByPlaylists } from '../spotify-utils/playlists';
 import { getSearchResultsByArtists } from '../spotify-utils/artists';
+import { getSearchResultsByUsers } from '../firebase';
 
 const useSearch = (searchTerm, filter) => {
 	const [ searchResults, setSearchResults ] = useState([]);
@@ -21,6 +22,7 @@ const useSearch = (searchTerm, filter) => {
 				getSearchResultsByPlaylists(searchTerm, cancelRequest).then(res => setSearchResults(res));
 			else if (filter === 'artist')
 				getSearchResultsByArtists(searchTerm, cancelRequest).then(res => setSearchResults(res));
+			else if (filter === 'user') getSearchResultsByUsers(searchTerm).then(res => setSearchResults(res));
 
 			return () => (cancelRequest = true);
 		},
