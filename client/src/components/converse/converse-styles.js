@@ -1,12 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { page_styles } from '../../common-styles';
-
-const msg_styles = css`
-	width: clamp(100px, 70%, 300px);
-	padding: 5px 10px;
-	border-radius: 15px;
-	margin-bottom: 15px;
-`;
 
 export const ConversationContainer = styled.main`
 	${page_styles};
@@ -17,25 +10,23 @@ export const ConversationContainer = styled.main`
 	& > .user-container {
 		width: 100%;
 	}
+
+	& .msg-editor {
+		padding: 5px 8px;
+		font-size: 1.2rem;
+		border: 1px solid grey;
+
+		&:hover {
+			outline: none;
+		}
+	}
 `;
 
 export const MsgContainer = styled.section`
 	flex-grow: 1;
 	overflow-y: auto;
 	padding-bottom: 10px;
-
-	& .msg-send {
-		${msg_styles};
-		margin-left: auto;
-		background-color: #e7d0f5;
-		color: #d95a0b;
-	}
-
-	& .msg-receive {
-		${msg_styles};
-		background-color: #e7d0f5;
-		color: #d95a0b;
-	}
+	width: 100%;
 `;
 
 export const SendMsgContainer = styled.div`
@@ -63,7 +54,7 @@ export const MsgInput = styled.span`
 		outline: none;
 	}
 
-	@media screen and (min-width: 800px) {
+	@media screen and (min-width: 768px) {
 		margin: 0;
 		width: 100%;
 	}
@@ -80,7 +71,7 @@ export const SendBtn = styled.button`
 	justify-content: center;
 	align-items: center;
 
-	@media screen and (min-width: 800px) {
+	@media screen and (min-width: 768px) {
 		display: none;
 	}
 `;

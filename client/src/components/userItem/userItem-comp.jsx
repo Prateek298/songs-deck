@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import { UserItemContainer, UserInfo } from './userItem-styles';
 
-const UserItem = ({ id, displayName, profileImg, smallImg, toProfile, showLastMsg }) => {
+const UserItem = ({ id, displayName, profileImg, lastMsg, smallImg, toProfile }) => {
 	const [ redirect, setRedirect ] = useState(false);
 
 	const placeholderImg =
@@ -20,7 +20,7 @@ const UserItem = ({ id, displayName, profileImg, smallImg, toProfile, showLastMs
 			<img src={profileImg || placeholderImg} alt="user-img" />
 			<UserInfo>
 				<h3 className="name">{displayName}</h3>
-				{showLastMsg ? <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, porro.</span> : null}
+				{lastMsg ? <span>{lastMsg}</span> : null}
 			</UserInfo>
 		</UserItemContainer>
 	);

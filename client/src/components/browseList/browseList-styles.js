@@ -18,6 +18,7 @@ export const BrowseListContainer = styled.section`
 		}
 
 		& p {
+			display: ${props => (props.by === 'rc' ? 'none' : 'block')};
 			font-size: 0.8rem;
 			cursor: pointer;
 

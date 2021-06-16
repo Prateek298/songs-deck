@@ -1,47 +1,98 @@
-import React from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 
 import { ConversationContainer, MsgContainer, SendMsgContainer, MsgInput, SendBtn } from './converse-styles';
 
-import { firestore } from '../../firebase';
+import { createMessage, addToRecent } from '../../firebase';
+import { UserContext } from '../../contexts';
+import useModifyMessage from '../../customHooks/useModifyMessage';
+import useFetchChatRoom from '../../customHooks/useFetchChatRoom';
 
 import { ReactComponent as MsgSend } from '../../assets/sendMsg.svg';
+import Modal from '../modal/modal-comp';
+import CustomButton from '../customButton/customButton-comp';
 import UserItem from '../userItem/userItem-comp';
+import ChatMsg from '../chatMsg/chatMsg-comp';
 
 const Converse = () => {
+	const inputEl = useRef();
+	const msgContainer = useRef();
+	const editor = useRef();
+	const { currentUserId } = useContext(UserContext);
+
 	const { chatToId } = useParams();
-	const [ user ] = useDocumentDataOnce(firestore.doc(`users/${chatToId}`));
+	const { receiver, messages, lastMsgId } = useFetchChatRoom(currentUserId, chatToId);
+
+	// for scrolling
+	useEffect(() => {
+		if (msgContainer) {
+			msgContainer.current.addEventListener('DOMNodeInserted', event => {
+				const { currentTarget: target } = event;
+				target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+			});
+		}
+	}, []);
+
+	const sendMessage = async () => {
+		createMessage({
+			text: inputEl.current.innerText,
+			by: currentUserId,
+			to: chatToId
+		});
+		addToRecent(currentUserId, chatToId, inputEl.current.innerText);
+		inputEl.current.innerText = '';
+	};
+
+	const handleKeyPress = e => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			sendMessage();
+		}
+	};
+
+	const { openModal, setOpenModal, longPress, msg, modifyMessage } = useModifyMessage();
 
 	return (
 		<ConversationContainer>
+			<Modal open={openModal} setOpen={setOpenModal} addClose>
+				<textarea ref={editor} className="msg-editor" cols="20" rows="7" defaultValue={msg.text} />
+				<br />
+				<CustomButton
+					isSolid
+					bg_color="yellow"
+					onClick={() =>
+						modifyMessage(
+							'update',
+							{ id: msg.id, text: editor.current.value },
+							msg.id === lastMsgId,
+							currentUserId,
+							chatToId
+						)}
+				>
+					UPDATE
+				</CustomButton>
+				<CustomButton
+					isSolid
+					bg_color="red"
+					onClick={() =>
+						modifyMessage('delete', { id: msg.id }, msg.id === lastMsgId, currentUserId, chatToId)}
+				>
+					DELETE
+				</CustomButton>
+			</Modal>
+
 			<div className="user-container">
-				<UserItem id={chatToId} {...user} smallImg toProfile />
+				<UserItem id={chatToId} {...receiver} smallImg toProfile />
 			</div>
-			<MsgContainer>
-				<div className="msg-send">
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, inventore?
-				</div>
-				<div className="msg-receive">
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nostrum ab repudiandae? Ipsam,
-					sequi corrupti?
-				</div>
-				<div className="msg-receive">
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nostrum ab repudiandae? Ipsam,
-					sequi corrupti?
-				</div>
-				<div className="msg-receive">
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nostrum ab repudiandae? Ipsam,
-					sequi corrupti?
-				</div>
-				<div className="msg-send">
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nostrum ab repudiandae? Ipsam,
-					sequi corrupti?
-				</div>
+			<MsgContainer ref={msgContainer}>
+				{messages &&
+					messages.map(msg => (
+						<ChatMsg key={msg.id} msg={msg} fromSender={currentUserId === msg.by} longPress={longPress} />
+					))}
 			</MsgContainer>
 			<SendMsgContainer>
-				<MsgInput role="textbox" contentEditable />
-				<SendBtn>
+				<MsgInput ref={inputEl} role="textbox" contentEditable onKeyPress={handleKeyPress} />
+				<SendBtn onClick={sendMessage}>
 					<MsgSend />
 				</SendBtn>
 			</SendMsgContainer>

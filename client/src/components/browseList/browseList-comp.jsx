@@ -19,7 +19,8 @@ const BrowseList = ({ by, items, lateral, showTitle, ...otherProps }) => {
 		usrp: 'User Playlists',
 		pt: 'Playlist Tracks',
 		albt: 'Album Tracks',
-		user: 'Users'
+		user: 'Users',
+		rc: 'Recent Chats'
 	};
 
 	return (
@@ -51,6 +52,7 @@ const BrowseList = ({ by, items, lateral, showTitle, ...otherProps }) => {
 				{by === 'sa' && items.map(item => <ArtistItem key={item.id} {...item} />)}
 
 				{by === 'user' && items.map(item => <UserItem key={item.id} id={item.id} {...item.data()} />)}
+				{by === 'rc' && items.map(item => <UserItem key={item.userId} id={item.userId} {...item} />)}
 			</ListContainer>
 		</BrowseListContainer>
 	);

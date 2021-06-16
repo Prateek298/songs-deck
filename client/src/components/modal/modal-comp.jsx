@@ -9,6 +9,7 @@ const Modal = ({ open, setOpen, addClose, children }) => {
 			<ModalContainer open={open}>
 				<ModalContent>
 					{children}
+					<br />
 					{addClose ? (
 						<ModalCloseButton isSolid bg_color="red" color="#fff" onClick={() => setOpen(false)}>
 							Close
