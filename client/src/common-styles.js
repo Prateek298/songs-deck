@@ -18,3 +18,16 @@ export const page_styles = css`
 `;
 
 export const PageContainer = styled.main`${page_styles};`;
+
+export const user_img_styles = css`
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+
+	& .profile-img {
+		object-fit: contain;
+		height: 100%;
+		width: 100%;
+	}
+`;

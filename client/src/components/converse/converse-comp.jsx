@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ConversationContainer, MsgContainer, SendMsgContainer, MsgInput, SendBtn } from './converse-styles';
 
 import { createMessage, addToRecent } from '../../firebase';
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 import useModifyMessage from '../../customHooks/useModifyMessage';
 import useFetchChatRoom from '../../customHooks/useFetchChatRoom';
 
@@ -18,7 +18,7 @@ const Converse = () => {
 	const inputEl = useRef();
 	const msgContainer = useRef();
 	const editor = useRef();
-	const { currentUserId } = useContext(UserContext);
+	const { currentUserId } = useContext(SpotifyUserContext);
 
 	const { chatToId } = useParams();
 	const { receiver, messages, lastMsgId } = useFetchChatRoom(currentUserId, chatToId);

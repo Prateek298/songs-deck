@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 
 const Player = ({ trackUri }) => {
-	const { accessToken } = useContext(UserContext);
+	const { accessToken } = useContext(SpotifyUserContext);
 
 	if (!accessToken) return null;
 	const styles = {

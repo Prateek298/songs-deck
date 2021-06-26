@@ -9,14 +9,10 @@ const UserItem = ({ id, displayName, profileImg, lastMsg, smallImg, toProfile })
 	const placeholderImg =
 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM4OAk-MLppYkLsLq61kJlFyTcEUBYRFUHaw&usqp=CAU';
 
-	const decideRedirect = () => {
-		if (toProfile) return;
-		setRedirect(true);
-	};
-
-	if (redirect) return <Redirect to={`/chat/${id}`} />;
+	if (redirect && toProfile) return <Redirect to={`/users/${id}`} />;
+	if (redirect && !toProfile) return <Redirect to={`/chat/${id}`} />;
 	return (
-		<UserItemContainer smallImg={smallImg} onClick={decideRedirect}>
+		<UserItemContainer smallImg={smallImg} onClick={() => setRedirect(true)}>
 			<img src={profileImg || placeholderImg} alt="user-img" />
 			<UserInfo>
 				<h3 className="name">{displayName}</h3>

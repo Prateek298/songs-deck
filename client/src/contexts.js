@@ -1,3 +1,4 @@
 import { createContext } from 'react';
 
-export const UserContext = createContext(undefined);
+export const SpotifyUserContext = createContext(undefined);
+export const FirebaseUserContext = createContext(undefined);

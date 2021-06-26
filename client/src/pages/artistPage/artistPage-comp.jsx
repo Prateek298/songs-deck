@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ArtistPageContainer } from './artistPage-styles';
 import { Loader } from '../../common-styles';
 
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 import { getArtistAlbums, getArtistTopTracks } from '../../spotify-utils/artists';
 
@@ -17,7 +17,7 @@ const ArtistPage = () => {
 	const [ topTracks, setTopTracks ] = useState([]);
 	const [ requestsCompleted, setRequestsCompleted ] = useState(0);
 	const { artistId } = useParams();
-	const { accessToken, country } = useContext(UserContext);
+	const { accessToken, country } = useContext(SpotifyUserContext);
 
 	const { longPress, ...passToModalProps } = useModifyPlaylist();
 

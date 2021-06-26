@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { AlbumContainer, PageTitle } from './album-styles';
 
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 import { getAlbumById } from '../../spotify-utils/artists';
 
@@ -17,7 +17,7 @@ const Album = () => {
 		albumImg: {},
 		tracks: []
 	});
-	const { accessToken } = useContext(UserContext);
+	const { accessToken } = useContext(SpotifyUserContext);
 	const { albumId } = useParams();
 
 	useEffect(

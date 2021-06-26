@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { UserContext } from '../contexts';
+import { SpotifyUserContext } from '../contexts';
 import { getSearchResultsByTracks, getSearchResultsByPlaylists } from '../spotify-utils/playlists';
 import { getSearchResultsByArtists } from '../spotify-utils/artists';
 import { getSearchResultsByUsers } from '../firebase';
 
 const useSearch = (searchTerm, filter) => {
 	const [ searchResults, setSearchResults ] = useState([]);
-	const { accessToken } = useContext(UserContext);
+	const { accessToken } = useContext(SpotifyUserContext);
 
 	useEffect(
 		() => {

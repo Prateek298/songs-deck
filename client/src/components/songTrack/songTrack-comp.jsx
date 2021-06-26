@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import { SongTrackContainer, TrackInfo } from './songTrack-styles';
 
-const SongTrack = ({ track, vertical, showImg, ...longPress }) => {
+const SongTrack = ({ track, vertical, showImg, hideAlbumName, ...longPress }) => {
 	const [ redirect, setRedirect ] = useState(false);
 
 	const { artists, title, albumImageUrl, albumName, uri } = track;
@@ -22,7 +22,7 @@ const SongTrack = ({ track, vertical, showImg, ...longPress }) => {
 			{showImg ? <img src={albumImageUrl} alt="img" width={vertical ? '120' : '90'} /> : null}
 			<TrackInfo>
 				<h3 className="title">{vertical ? title.length > 18 ? `${title.slice(0, 18)}...` : title : title}</h3>
-				<span className="album">{albumName}</span>
+				{!hideAlbumName ? <span className="album">{albumName}</span> : null}
 				{artists ? (
 					<span className="artist">
 						{vertical ? artistsString.length > 18 ? (

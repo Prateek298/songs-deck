@@ -58,9 +58,18 @@ export const getSearchResultsByTracks = async (searchTerm, cancelRequest) => {
 	}
 };
 
+export const getTracksByIds = async trackIds => {
+	try {
+		const { body } = await spotifyApi.getTracks(trackIds);
+		return mapOverTracks(body.tracks, 'favourites');
+	} catch (err) {
+		console.log('Error fetching tracks', err);
+	}
+};
+
 function mapOverTracks(items, calledFrom) {
 	return items.map(item => {
-		const { artists, name, album, uri } = calledFrom === 'searchPage' ? item : item.track;
+		const { artists, name, album, uri } = [ 'searchPage', 'favourites' ].includes(calledFrom) ? item : item.track;
 		return {
 			artists: artists.map(artist => artist.name),
 			title: name,

@@ -24,7 +24,9 @@ export const createUserDocument = async userData => {
 			profileImg: userData.profileImg,
 			country: userData.country,
 			createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-			recentChats: []
+			description: '',
+			recentChats: [],
+			favTracks: []
 		};
 
 		if (!userSnap.exists) {
@@ -94,5 +96,21 @@ export const populateRecentChats = async recent => {
 		return populatedData;
 	} catch (err) {
 		console.error('Populate recent failed', err);
+	}
+};
+
+export const addToFavourites = async (userId, trackIds) => {
+	try {
+		await firestore.doc(`users/${userId}`).update({ favTracks: trackIds });
+	} catch (err) {
+		console.error('Error adding to featured', err);
+	}
+};
+
+export const addUserDescription = async (userId, description) => {
+	try {
+		await firestore.doc(`users/${userId}`).update({ description });
+	} catch (err) {
+		console.error('Failed to update description', err);
 	}
 };

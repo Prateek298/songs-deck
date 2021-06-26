@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
+
+import { user_img_styles } from '../../common-styles';
 
 export const HeaderContainer = styled.header`
 	display: flex;
@@ -17,17 +18,8 @@ export const LogoContainer = styled(Link)`
     width: 40px;
 `;
 
-export const ProfileImgContainer = styled.div`
-	height: 40px;
-	width: 40px;
-	border-radius: 50%;
-	overflow: hidden;
-
-	& .profile-img {
-		object-fit: contain;
-		height: 100%;
-		width: 100%;
-	}
+export const ProfileImgContainer = styled(Link)`
+	${user_img_styles}
 `;
 
 export const PremiumLink = styled.a`

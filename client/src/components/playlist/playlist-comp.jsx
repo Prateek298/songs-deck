@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { PlaylistContainer, PageTitle } from './playlist-styles';
 import { Loader } from '../../common-styles';
 
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 import { getPlaylistTracks } from '../../spotify-utils/playlists';
 import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 
@@ -15,7 +15,7 @@ const Playlist = ({ location: { visitedUser } }) => {
 	const { playlistId, userId } = useParams();
 	const [ playlistTracks, setPlaylistTracks ] = useState([]);
 	const [ playlistName, setPlaylistName ] = useState('');
-	const { currentUserId, accessToken } = useContext(UserContext);
+	const { currentUserId, accessToken } = useContext(SpotifyUserContext);
 
 	useEffect(
 		() => {

@@ -5,7 +5,7 @@ import { PlaylistsCollectionContainer, AddNew } from './playlistsCollection-styl
 import { Loader } from '../../common-styles';
 
 import { spotifyApi } from '../../App';
-import { UserContext } from '../../contexts';
+import { SpotifyUserContext } from '../../contexts';
 import useFetchPlaylists from '../../customHooks/useFetchPlaylists';
 
 import BrowseList from '../browseList/browseList-comp';
@@ -23,7 +23,7 @@ const PlaylistsCollection = ({ location: { visitedUser } }) => {
 		access: 'public',
 		coverImgUrl: ''
 	});
-	const { displayName, currentUserId } = useContext(UserContext);
+	const { displayName, currentUserId } = useContext(SpotifyUserContext);
 
 	const playlists = useFetchPlaylists(userId);
 

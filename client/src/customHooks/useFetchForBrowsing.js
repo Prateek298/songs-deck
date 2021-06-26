@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { UserContext } from '../contexts';
+import { SpotifyUserContext } from '../contexts';
 import { getNewReleases, getFeaturedPlaylists, getRecommendations } from '../spotify-utils/browse';
 
 const useFetchForBrowsing = () => {
@@ -8,7 +8,7 @@ const useFetchForBrowsing = () => {
 	const [ recommendations, setRecommendations ] = useState([]);
 	const [ featPlaylists, setFeatPlaylists ] = useState([]);
 	const [ completedRequests, setCompletedRequests ] = useState(0);
-	const { accessToken } = useContext(UserContext);
+	const { accessToken } = useContext(SpotifyUserContext);
 
 	useEffect(
 		() => {

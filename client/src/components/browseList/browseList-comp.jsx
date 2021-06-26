@@ -20,7 +20,8 @@ const BrowseList = ({ by, items, lateral, showTitle, ...otherProps }) => {
 		pt: 'Playlist Tracks',
 		albt: 'Album Tracks',
 		user: 'Users',
-		rc: 'Recent Chats'
+		rc: 'Recent Chats',
+		tt: 'Top Tracks'
 	};
 
 	return (
@@ -32,8 +33,8 @@ const BrowseList = ({ by, items, lateral, showTitle, ...otherProps }) => {
 				</div>
 			) : null}
 			<ListContainer lateral={lateral} by={by}>
-				{(by === 'nw' || by === 'recc') &&
-					items.map(item => <SongTrack key={item.uri} track={item} vertical showImg />)}
+				{(by === 'nw' || by === 'recc' || by === 'tt') &&
+					items.map(item => <SongTrack key={item.uri} track={item} vertical showImg hideAlbumName />)}
 				{(by === 'st' || by === 'pt') &&
 					items.map(item => <SongTrack key={item.uri} track={item} showImg {...otherProps.longPress} />)}
 				{by === 'albt' &&
