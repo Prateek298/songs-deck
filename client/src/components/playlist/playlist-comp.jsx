@@ -10,11 +10,14 @@ import useModifyPlaylist from '../../customHooks/useModifyPlaylist';
 
 import AddTrackModal from '../addTrackModal/addTrackModal-comp';
 import BrowseList from '../browseList/browseList-comp';
+import PopularityGraph from '../chart/chart-comp';
+import graphIcon from '../../assets/graphIcon.jpg';
 
 const Playlist = ({ location: { visitedUser } }) => {
 	const { playlistId, userId } = useParams();
 	const [ playlistTracks, setPlaylistTracks ] = useState([]);
 	const [ playlistName, setPlaylistName ] = useState('');
+	const [ showChart, setShowChart ] = useState(false);
 	const { currentUserId, accessToken } = useContext(SpotifyUserContext);
 
 	useEffect(
@@ -40,14 +43,24 @@ const Playlist = ({ location: { visitedUser } }) => {
 			<AddTrackModal {...passToModalProps} playlistId={playlistId} removeBtn />
 
 			<PageTitle>
-				{playlistName}
-				{currentUserId !== userId ? (
-					<Link to={{ pathname: `/${userId}/playlists`, visitedUser }}> (By {visitedUser.display_name})</Link>
-				) : (
-					''
-				)}
+				<span>
+					{playlistName}
+					{currentUserId !== userId ? (
+						<Link to={{ pathname: `/${userId}/playlists`, visitedUser }}>
+							{' '}
+							(By {visitedUser.display_name})
+						</Link>
+					) : null}
+				</span>
+				<button className="toggle-chart" onClick={() => setShowChart(!showChart)}>
+					<img src={graphIcon} alt="graph" />
+				</button>
 			</PageTitle>
-			<BrowseList by="pt" items={playlistTracks} longPress={longPress} />
+			{showChart ? (
+				<PopularityGraph items={playlistTracks} />
+			) : (
+				<BrowseList by="pt" items={playlistTracks} longPress={longPress} />
+			)}
 		</PlaylistContainer>
 	);
 };

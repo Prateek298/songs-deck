@@ -69,12 +69,15 @@ export const getTracksByIds = async trackIds => {
 
 function mapOverTracks(items, calledFrom) {
 	return items.map(item => {
-		const { artists, name, album, uri } = [ 'searchPage', 'favourites' ].includes(calledFrom) ? item : item.track;
+		const { artists, name, album, popularity, uri } = [ 'searchPage', 'favourites' ].includes(calledFrom)
+			? item
+			: item.track;
 		return {
 			artists: artists.map(artist => artist.name),
 			title: name,
 			albumImageUrl: album.images[2].url,
 			albumName: album.album_type !== 'single' ? album.name : album.album_type,
+			popularity,
 			uri
 		};
 	});
