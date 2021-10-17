@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LandingPageContainer, LandingHeading, LandingText } from './landingPage-styles';
+import { LandingPageContainer, Header, Overview, Connect, ContentHeading } from './landingPage-styles';
 
 import CustomButton from '../../components/customButton/customButton-comp';
 
@@ -10,13 +10,48 @@ const AUTH_URL =
 const LandingPage = () => {
 	return (
 		<LandingPageContainer>
-			<LandingHeading>SongsDeck</LandingHeading>
-			<LandingText>Immerse in the music you love and let those beats stay with you a little longer</LandingText>
-			<CustomButton as="a" href={AUTH_URL} padding="20px 25px">
-				SIGN IN
-			</CustomButton>
+			<Header>
+				<div className="header-content">
+					<h1>Songs Deck</h1>
+					<h4>
+						A Spotify based music application which tries to introduce alternative to existing features and
+						adds further to the user experience
+					</h4>
+					<CustomButton as="a" href={AUTH_URL} padding="20px 25px" display="inline-block">
+						SIGN IN
+					</CustomButton>
+				</div>
+			</Header>
+			<Overview>
+				<div className="overview-content">
+					<ContentHeading>More to enjoy</ContentHeading>
+					<h4>
+						Enhanced features of Spotify with various other utilities to give you a better wholesome music
+						app experience, right on the web.
+					</h4>
+				</div>
+			</Overview>
+			<Connect>
+				<div className="connect-content">
+					<div className="about-chat">
+						<ContentHeading>Talk & Share</ContentHeading>
+						<h4>
+							With an in-built chat, talk to your friends about the music share love for, or make new
+							song-buddies with the other users.
+						</h4>
+					</div>
+					<div className="about-profile">
+						<ContentHeading>Express Yourself!</ContentHeading>
+						<h4>
+							Create your own customised profile, to let others know about your interest. Discover people
+							who have similar taste.
+						</h4>
+					</div>
+				</div>
+			</Connect>
 		</LandingPageContainer>
 	);
 };
 
 export default LandingPage;
+// Immerse in the music you love and let those beats stay with you a little longer

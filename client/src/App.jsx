@@ -57,10 +57,10 @@ const App = () => {
 	);
 
 	return (
-		<div className="app-container">
+		<div className={`app-container ${code ? 'showBg' : ''}`}>
 			<SpotifyUserContext.Provider value={userInfo}>
 				<FirebaseUserContext.Provider value={fsUserData}>
-					<Header />
+					{code && <Header />}
 					<Switch>
 						<Route exact path="/" render={() => (code ? <UserDashboard /> : <LandingPage />)} />
 						<Route

@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const BaseButtonStyles = css`
+	display: ${props => (props.display ? props.display : 'inline')};
 	padding: ${props => (props.padding ? props.padding : '10px 15px')};
 	border-radius: ${props => (props.rounded ? '20px' : '3px')};
 	color: ${props => props.color || '#66fcf1'};
